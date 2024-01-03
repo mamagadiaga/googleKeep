@@ -7,7 +7,7 @@
   font-family: "Roboto", sans-serif;
 }
 
-/* HOVER EFEECTS */
+/* HOVER */
 
 .material-icons-outlined {
   padding: 10px;
@@ -40,7 +40,7 @@
   visibility: visible;
 }
 
-/* NAVBAR STYLES */
+/* NAVBAR */
 
 nav {
   display: flex;
@@ -92,8 +92,6 @@ input:focus {
   display: flex;
 }
 
-/* MAIN SECTION STYLES */
-
 /* SIDEBAR */
 .sidebar {
   position: fixed;
@@ -129,7 +127,7 @@ input:focus {
   margin-top: 5px;
 }
 
-/* MAIN FORM */
+/* MAIN */
 .form-container {
   background: #fff;
   max-width: 598px;
