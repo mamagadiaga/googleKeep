@@ -129,7 +129,9 @@ input:focus {
 .sidebar-item:nth-child(1) {
   margin-top: 5px;
 }
-
+.sidebar-item .material-icons-outlined {
+  margin-left: 15px;
+}
 /* Ajoutez les styles pour les écrans plus petits ici */
 @media screen and (max-width: 868px) {
   .sidebar-item .sidebar-text {
@@ -154,7 +156,6 @@ input:focus {
     justify-content: center;
     align-items: center;
   }
-  
 }
 
 @media screen and (max-width: 670px) {
