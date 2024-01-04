@@ -10,6 +10,9 @@
     href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+
+
 </head>
 
 <body>
@@ -20,8 +23,9 @@
         <span class="tooltip-text">Main Menu</span>
       </div>
 
-      <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" alt=""
-        style="width: 40px; height: 40px;" />
+      <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" "
+          alt=""
+          style=" width: 40px; height: 40px;" />
       <span class="logo-text">Keep</span>
     </div>
 
@@ -59,8 +63,8 @@
   </nav>
   <main>
     <div class="sidebar">
-      <div class="sidebar-item">
-        <span class="material-icons-outlined hover active">lightbulb</span>
+      <div class="sidebar-item active">
+        <span class="material-icons-outlined hover ">lightbulb</span>
         <span class="sidebar-text">Notes</span>
       </div>
       <div class="sidebar-item">
@@ -80,6 +84,7 @@
         <span class="sidebar-text">Trash</span>
       </div>
     </div>
+
     <div class="form-container">
       <form>
         <input class="note-text" type="text" placeholder="Take a note..." />
@@ -99,6 +104,67 @@
         </div>
       </form>
     </div>
+
+    <div class="form-container active-form">
+      <form>
+        <input type="text" class="note-title" placeholder="Title" />
+        <input class="note-text" type="text" placeholder="Take a note..." />
+        <div class="form-actions">
+          <div class="icons">
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">add_alert</span>
+              <span class="tooltip-text">Remind me</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">person_add</span>
+              <span class="tooltip-text">Collaborator</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">palette</span>
+              <span class="tooltip-text">Change Color</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">image</span>
+              <span class="tooltip-text">Add Image</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">archive</span>
+              <span class="tooltip-text">Archive</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">more_vert</span>
+              <span class="tooltip-text">More</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">undo</span>
+              <span class="tooltip-text">Undo</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon">redo</span>
+              <span class="tooltip-text">Redo</span>
+            </div>
+          </div>
+          <button class="close-btn">Close</button>
+        </div>
+      </form>
+    </div>
+
+
+
+
+
+
+
   </main>
+
+
+
+
+
+
+
+
+  <script src="index.js"></script>
 </body>
+
 </html>
