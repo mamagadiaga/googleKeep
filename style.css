@@ -133,22 +133,22 @@ input:focus {
 .sidebar-item .material-icons-outlined {
   margin-left: 15px;
 }
-/* Ajoutez les styles pour les écrans plus petits ici */
+
 @media screen and (max-width: 868px) {
   .sidebar-item .sidebar-text {
-    display: none; /* Masquer le texte */
+    display: none; 
   }
 
   .sidebar {
-    width: auto; /* Ajuster la largeur automatiquement */
+    width: auto; 
   }
 
   .sidebar-item {
-    padding: 8px; /* Espacement pour les icônes */
+    padding: 8px; 
   }
 
   .sidebar-item .material-icons-outlined {
-    font-size: 1.5rem; /* Taille de l'icône */
+    font-size: 1.5rem; 
   }
 
   /* Si vous voulez aligner les icônes au centre */
@@ -314,7 +314,7 @@ input:focus {
   padding: 10px;
 }
 .notes-content {
-  text-align: start; /* Centrer le contenu horizontalement */
+  text-align: start; 
   background: #fff;
   border-radius: 10px;
   display: inline-block;

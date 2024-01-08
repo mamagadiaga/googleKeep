@@ -35,7 +35,8 @@ function addNewNote() {
 //     note.style.backgroundColor = color;
 //   });
 // }
-document.addEventListener("DOMContentLoaded", function () {
+
+$(document).ready(function () {
   let storedNotes = localStorage.getItem("notes");
   if (storedNotes) {
     notesArray = JSON.parse(storedNotes);
@@ -52,32 +53,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  document.getElementById("save_note").addEventListener("click", function () {
-    let title = document.getElementById("input-title").value;
-    let content = document.getElementById("input-feild").value;
-    let bg_color = getComputedStyle(document.getElementById("notes-content")).backgroundColor;
-    let index = "colour" + Math.ceil(Math.random() * 3);
+ $("#save_note").click(function () {
+  let title = $("#input-title").val();
+  let content = $("#input-feild").val();
+  let bg_color = $("#notes-content").css("background-color"); // Modifier cette ligne
+  let index = "colour" + Math.ceil(Math.random() * 3);
 
-    if (title !== "" || content !== "") {
-      notesArray = [];
+  if (title !== "" || content !== "") {
+    // Supprimer toutes les notes existantes du tableau
+    notesArray = [];
 
-      notesArray.push({
-        Index: index,
-        Color: bg_color,
-        Title: title,
-        Content: content,
-        BackgroundColor: bg_color 
-      });
+    notesArray.push({
+      Index: index,
+      Color: bg_color,
+      Title: title,
+      Content: content,
+      BackgroundColor: bg_color 
+    });
 
-      let jsonStr = JSON.stringify(notesArray);
-      localStorage.setItem("notes", jsonStr);
-      addNewNote(index, bg_color, title, content);
-    }
-  });
+    let jsonStr = JSON.stringify(notesArray);
+    localStorage.setItem("notes", jsonStr);
+    addNewNote(index, bg_color, title, content);
+  }
+});
+
 });
 
 function addNewNote(id, color, title, content) {
-  let notes = document.getElementsByClassName("notes")[0];
+  let notes = $(".notes");
   let noteTemplate = `
   <div class="notes-content" id="notes-content" style="background-color:${color}">
     <h4 class="note-title">${title}</h4>
@@ -86,13 +89,13 @@ function addNewNote(id, color, title, content) {
   </div>
 `;
 
-  notes.insertAdjacentHTML("beforeend", noteTemplate);
 
-  document.getElementById(id).addEventListener("click", function () {
-    this.closest(".notes-content").remove();
-    notesArray = notesArray.filter(note => note.Index !== id);
+  notes.append(noteTemplate);
+
+  $("#" + id).click(function () {
+    $(this).closest(".notes-content").remove();
+    notesArray = notesArray.filter(note => note.Index !== id); // Retirer la note supprimée du tableau
     let jsonStr = JSON.stringify(notesArray);
-    localStorage.setItem("notes", jsonStr);
+    localStorage.setItem("notes", jsonStr); // Mettre à jour les notes dans le localStorage
   });
 }
-
