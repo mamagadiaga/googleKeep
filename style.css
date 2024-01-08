@@ -159,9 +159,7 @@ input:focus {
   }
 }
 
-@media screen and (max-width: 670px) {
- 
-}
+
 
 
 /* MAIN */
@@ -342,3 +340,5 @@ input:focus {
   text-decoration: none;
   color: black;
 }
+
+

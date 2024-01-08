@@ -1,12 +1,23 @@
- function showCard() {
-    document.getElementById("card-container").style.display = "block";
-    document.getElementById("form-container").style.display = "none";
-  }
+function showCard() {
+  document.getElementById("card-container").style.display = "block";
+  document.getElementById("form-container").style.display = "none";
+}
 
-  function hideCard() {
-    document.getElementById("card-container").style.display = "none";
-    document.getElementById("form-container").style.display = "block";
+function hideCard() {
+  document.getElementById("card-container").style.display = "none";
+  document.getElementById("form-container").style.display = "block";
+}
+
+
+document.addEventListener("click", function(event) {
+  let cardContainer = document.getElementById("card-container");
+  let formContainer = document.getElementById("form-container");
+
+  
+  if (!cardContainer.contains(event.target) && !formContainer.contains(event.target)) {
+    hideCard();
   }
+});
 
 
 // Background
