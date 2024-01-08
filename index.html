@@ -16,52 +16,53 @@
 </head>
 
 <body>
-  <nav>
-    <div class="logo-area">
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">menu</span>
-        <span class="tooltip-text">Main Menu</span>
-      </div>
+  <main>
+    <nav>
+      <div class="logo-area">
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">menu</span>
+          <span class="tooltip-text">Main Menu</span>
+        </div>
 
-      <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" "
+        <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" "
           alt=""
           style=" width: 40px; height: 40px;" />
-      <span class="logo-text">Keep</span>
-    </div>
+        <span class="logo-text">Keep</span>
+      </div>
 
-    <div class="search-area">
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">search</span>
-        <span class="tooltip-text">Search</span>
+      <div class="search-area">
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">search</span>
+          <span class="tooltip-text">Search</span>
+        </div>
+        <input type="text" placeholder="Search" />
       </div>
-      <input type="text" placeholder="Search" />
-    </div>
-    <div class="settings-area">
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">refresh</span>
-        <span class="tooltip-text">Refresh</span>
+      <div class="settings-area">
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">refresh</span>
+          <span class="tooltip-text">Refresh</span>
+        </div>
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">view_agenda</span>
+          <span class="tooltip-text">List View</span>
+        </div>
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">settings</span>
+          <span class="tooltip-text">Settings</span>
+        </div>
       </div>
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">view_agenda</span>
-        <span class="tooltip-text">List View</span>
+      <div class="profile-actions-area">
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">apps</span>
+          <span class="tooltip-text">Apps</span>
+        </div>
+        <div class="tooltip">
+          <span class="material-icons-outlined hover">account_circle</span>
+          <span class="tooltip-text">Account</span>
+        </div>
       </div>
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">settings</span>
-        <span class="tooltip-text">Settings</span>
-      </div>
-    </div>
-    <div class="profile-actions-area">
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">apps</span>
-        <span class="tooltip-text">Apps</span>
-      </div>
-      <div class="tooltip">
-        <span class="material-icons-outlined hover">account_circle</span>
-        <span class="tooltip-text">Account</span>
-      </div>
-    </div>
-  </nav>
-  <main>
+    </nav>
+
     <div class="sidebar">
       <div class="sidebar-item active">
         <span class="material-icons-outlined hover ">lightbulb</span>
@@ -84,84 +85,55 @@
         <span class="sidebar-text">Trash</span>
       </div>
     </div>
-
-    <!-- <div class="form-container">
-      <form>
-        <input class="note-text" type="text" placeholder="Take a note..." />
-        <div class="form-actions">
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">check_box</span>
-            <span class="tooltip-text">New List</span>
-          </div>
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">brush</span>
-            <span class="tooltip-text">New Drawing</span>
-          </div>
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">image</span>
-            <span class="tooltip-text">New Image</span>
-          </div>
-        </div>
-      </form>
-    </div> -->
-
-    <!-- <div class="form-container active-form">
-      <form>
-        <input type="text" class="note-title" placeholder="Title" />
-        <input class="note-text" type="text" placeholder="Take a note..." />
-        <div class="form-actions">
-          <div class="icons">
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">add_alert</span>
-              <span class="tooltip-text">Remind me</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">person_add</span>
-              <span class="tooltip-text">Collaborator</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">palette</span>
-              <span class="tooltip-text">Change Color</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">image</span>
-              <span class="tooltip-text">Add Image</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">archive</span>
-              <span class="tooltip-text">Archive</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">more_vert</span>
-              <span class="tooltip-text">More</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">undo</span>
-              <span class="tooltip-text">Undo</span>
-            </div>
-            <div class="tooltip">
-              <span class="material-icons-outlined hover small-icon">redo</span>
-              <span class="tooltip-text">Redo</span>
-            </div>
-          </div>
-          <button class="close-btn">Close</button>
-        </div>
-      </form>
-    </div> -->
-
-
-
-
-
-
-
   </main>
 
 
+  <section class="contenu">
+    <div id="form-container" class="form-container">
+      <form>
+        <input class="note-text" type="text" placeholder="Take a note..." onclick="showCard()" />
+        <div class="form-actions">
+          <div class="tooltip">
+            <span class="material-icons-outlined hover">check_box</span>
+            <span class="tooltip-text">Nouvelle liste</span>
+          </div>
+          <div class="tooltip">
+            <span class="material-icons-outlined hover">brush</span>
+            <span class="tooltip-text">Nouveau dessin</span>
+          </div>
+          <div class="tooltip">
+            <span class="material-icons-outlined hover">image</span>
+            <span class="tooltip-text">Nouvelle image</span>
+          </div>
+        </div>
+      </form>
+    </div>
 
+    <div class="container_card" id="card-container" style="display: none;">
+      <div class="card" id="main-card">
+        <input type="text" name="title" placeholder="Title" class="text-inputs" id="input-title">
+        <input type="text" name="text" placeholder="Take a note..." class="text-inputs" id="input-feild">
+        <div class="icons">
+          <a href="#"><i class="material-icons">touch_app</i></a>
+          <a href="#"><i class="material-icons">person_add</i></a>
+          <a href="#"><i class="material-icons" onclick="show()">color_lens</i>
+            <input type="color" id="colorPicker" style="display: none;" onchange="set_color(event)">
+          </a>
+          <a href="#"><i class="material-icons">image</i></a>
+          <a href="#"><i class="material-icons">archive</i></a>
+          <a href="#"><i class="material-icons">more_vert</i></a>
+          <a href="#"><i class="material-icons">undo</i></a>
+          <a href="#"><i class="material-icons">redo</i></a>
+          <a href="#" id="save_note" onclick="hideCard()">Save</a>
+        </div>
+      </div>
+    </div>
+    <div class="note-container">
+      <div class="notes">
 
-
-
+      </div>
+    </div>
+  </section>
 
 
   <script src="index.js"></script>
