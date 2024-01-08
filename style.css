@@ -298,6 +298,11 @@ input:focus {
   font-weight: 700;
 }
 
+#save_note{
+ float: right;
+ font-weight: bold;
+}
+
 .note-container {
   text-align: center;
   width: 100%;
