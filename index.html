@@ -95,15 +95,15 @@
         <div class="form-actions">
           <div class="tooltip">
             <span class="material-icons-outlined hover">check_box</span>
-            <span class="tooltip-text">Nouvelle liste</span>
+            <span class="tooltip-text">New note content list</span>
           </div>
           <div class="tooltip">
             <span class="material-icons-outlined hover">brush</span>
-            <span class="tooltip-text">Nouveau dessin</span>
+            <span class="tooltip-text">New note content draw</span>
           </div>
           <div class="tooltip">
             <span class="material-icons-outlined hover">image</span>
-            <span class="tooltip-text">Nouvelle image</span>
+            <span class="tooltip-text">New note content image</span>
           </div>
         </div>
       </form>
@@ -119,21 +119,22 @@
           <a href="#"><i class="material-icons" onclick="show()">color_lens</i>
             <input type="color" id="colorPicker" style="display: none;" onchange="set_color(event)">
           </a>
-          <a href="#"><i class="material-icons">image</i></a>
+          <a href="#"><i class="material-icons image" id="image">image</i></a>
           <a href="#"><i class="material-icons">archive</i></a>
           <a href="#"><i class="material-icons">more_vert</i></a>
           <a href="#"><i class="material-icons">undo</i></a>
           <a href="#"><i class="material-icons">redo</i></a>
           <a href="#" id="save_note" onclick="hideCard()">Save</a>
         </div>
-      </div>
+      </div> 
     </div>
     <div class="note-container">
-      <div class="notes">
+      <div class="notes" id="notes">
 
       </div>
     </div>
   </section>
+
 
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
