@@ -341,21 +341,7 @@ input:focus {
   color: black;
 }
 
-/* Ajoutez ces styles pour le conteneur d'image */
-.card-image {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-
-.card-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-#colorPicker {
-  /* Ajoutez ces propriétés pour positionner l'élément au centre */
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
+/* 
+.image-card{
+  height: 200px;
+} */
