@@ -99,15 +99,15 @@ $(document).ready(function () {
     notesArray = JSON.parse(storedNotes);
     count = notesArray.length;
 
-    for (let i = 0; i < count; i++) {
-      let storedNote = notesArray[i];
-      addNewNote(
-        "color" + i,
-        storedNote.BackgroundColor, 
-        storedNote.Title,
-        storedNote.Content
-      );
-    }
+    // for (let i = 0; i < count; i++) {
+    //   let storedNote = notesArray[i];
+    //   addNewNote(
+    //     "color" + i,
+    //     storedNote.BackgroundColor, 
+    //     storedNote.Title,
+    //     storedNote.Content
+    //   );
+    // }
   }
   
 
