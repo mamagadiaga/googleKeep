@@ -107,7 +107,6 @@ $(document).ready(function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
 
-    // Remove the note directly without moving to the Trash
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
     updateLocalStorageAndUI();
   });
@@ -139,7 +138,6 @@ function updateLocalStorageAndUI() {
   localStorage.setItem("notes", jsonStr);
   updateNotes();
 }
-// ... Your existing JavaScript code ...
 
 function addNewNote(id, color, title, content, imageURL) {
   let notes = $(".notes");
@@ -149,8 +147,8 @@ function addNewNote(id, color, title, content, imageURL) {
       <h4 class="note-title">${title}</h4>
       <p>${content}</p>
       <div class="note-actions">
+      <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
         <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
-        <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
       </div>
     </div>
   `;
@@ -159,14 +157,11 @@ function addNewNote(id, color, title, content, imageURL) {
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
   
-    // Handle edit functionality here
     let note = notesArray.find(note => note.Index === id);
   
-    // Assuming you have an edit modal, you can populate it with the note details
     $("#edit-title").val(note.Title);
     $("#edit-content").val(note.Content);
   
-    // Show the edit modal and pass the note ID
     openEditModal(id);
   });
   
@@ -174,22 +169,17 @@ function addNewNote(id, color, title, content, imageURL) {
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
 
-    // Handle edit functionality here
     let note = notesArray.find(note => note.Index === id);
 
-    // Assuming you have an edit modal, you can populate it with the note details
     $("#edit-title").val(note.Title);
     $("#edit-content").val(note.Content);
 
-    // Show the edit modal
     openEditModal();
 
-    // Save edited note when the save button in the modal is clicked
     $("#saveEdit").off("click").on("click", function () {
       let editedTitle = $("#edit-title").val();
       let editedContent = $("#edit-content").val();
 
-      // Update the edited note in the array
       notesArray.push({
         Index: id,
         Color: note.BackgroundColor,
@@ -199,41 +189,32 @@ function addNewNote(id, color, title, content, imageURL) {
         ImageURL: note.ImageURL,
       });
 
-      // Update local storage and UI
       updateLocalStorageAndUI();
 
-      // Close the edit modal
       closeEditModal();
     });
   });
 }
 
 function saveEdit() {
-  // Get the edited values from the modal
   var editedTitle = $("#edit-title").val();
   var editedContent = $("#edit-content").val();
 
-  // Get the note index from the modal's data attribute
   var id = $("#editModal").data("note-id");
 
-  // Update the note in the array
   var noteIndex = notesArray.findIndex(note => note.Index === id);
   if (noteIndex !== -1) {
     notesArray[noteIndex].Title = editedTitle;
     notesArray[noteIndex].Content = editedContent;
   }
 
-  // Update local storage and UI
   updateLocalStorageAndUI();
 
-  // Close the edit modal
   closeEditModal();
 }
 function openEditModal(id) {
-  // Set the note ID in the modal's data attribute
   $("#editModal").data("note-id", id);
 
-  // Show the edit modal
   document.getElementById("editModal").style.display = "block";
 }
 

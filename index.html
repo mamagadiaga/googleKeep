@@ -221,10 +221,9 @@
     </div>
   </div>
 
-  <script>
-    // Your existing JavaScript code
 
-    // JavaScript code for opening and closing the edit modal
+  <!-- Modal -->
+  <script>
     function openEditModal() {
       document.getElementById("editModal").style.display = "block";
     }
@@ -233,16 +232,10 @@
       document.getElementById("editModal").style.display = "none";
     }
 
-    // JavaScript code for saving the edits
     function saveEdit() {
-      // Get the edited values from the modal
       var editedTitle = document.getElementById("edit-title").value;
       var editedContent = document.getElementById("edit-content").value;
 
-      // Update the note in the array (you need to implement this part)
-      // ...
-
-      // Close the edit modal
       closeEditModal();
     }
 
