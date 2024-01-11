@@ -15,6 +15,8 @@
 
 </head>
 
+
+
 <body>
   <main>
     <nav>
@@ -24,7 +26,7 @@
           <span class="tooltip-text">Main Menu</span>
         </div>
 
-        <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" "
+        <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" 
           alt=""
           style=" width: 40px; height: 40px;" />
         <span class="logo-text">Keep</span>
@@ -63,82 +65,156 @@
       </div>
     </nav>
 
-    <div class="sidebar">
-      <div class="sidebar-item active">
-        <span class="material-icons-outlined hover ">lightbulb</span>
-        <span class="sidebar-text">Notes</span>
+    <aside>
+      <div class="sidebar">
+        <div class="sidebar-item" onclick="handleSidebarClick('notePage')">
+          <span class="material-icons-outlined hover">lightbulb</span>
+          <span class="sidebar-text">Notes</span>
+        </div>
+
+        <div class="sidebar-item" onclick="handleSidebarClick('remindPage')">
+          <span class="material-icons-outlined hover">notifications</span>
+          <span class="sidebar-text">Reminders</span>
+        </div>
+        <div class="sidebar-item" onclick="handleSidebarClick('editPage')">
+          <span class="material-icons-outlined hover">edit</span>
+          <span class="sidebar-text">Edit Labels</span>
+        </div>
+        <div class="sidebar-item" onclick="handleSidebarClick('archivePage')">
+          <span class="material-icons-outlined hover">archive</span>
+          <span class="sidebar-text">Archive</span>
+        </div>
+        <div class="sidebar-item" onclick="handleSidebarClick('deletePage')">
+          <span class="material-icons-outlined hover">delete</span>
+          <span class="sidebar-text">Trash</span>
+        </div>
       </div>
-      <div class="sidebar-item">
-        <span class="material-icons-outlined hover">notifications</span>
-        <span class="sidebar-text">Reminders</span>
+    </aside>
+
+    <section id="notePage" class="contenu">
+      <!-- Contenu de la page "Notes" -->
+      <div id="form-container" class="form-container">
+        <form>
+          <input class="note-text" type="text" placeholder="Take a note..." onclick="showCard()" />
+          <div class="form-actions">
+            <div class="tooltip">
+              <span class="material-icons-outlined hover">check_box</span>
+              <span class="tooltip-text">New note content list</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover">brush</span>
+              <span class="tooltip-text">New note content draw</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover">image</span>
+              <span class="tooltip-text">New note content image</span>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="sidebar-item">
-        <span class="material-icons-outlined hover">edit</span>
-        <span class="sidebar-text">Edit Labels</span>
+      <div class="container_card" id="card-container" style="display: none;">
+        <div class="card" id="main-card">
+          <input type="text" name="title" placeholder="Title" class="text-inputs" id="input-title">
+          <input type="text" name="text" placeholder="Take a note..." class="text-inputs" id="input-feild">
+          <div class="icons">
+            <a href="#"><i class="material-icons">touch_app</i></a>
+            <a href="#"><i class="material-icons">person_add</i></a>
+            <a href="#"><i class="material-icons" onclick="show()">color_lens</i>
+              <input type="color" id="colorPicker" style="display: none;" onchange="set_color(event)">
+            </a>
+            <a href="#"><i class="material-icons image" id="image">image</i></a>
+            <a href="#"><i class="material-icons">archive</i></a>
+            <a href="#"><i class="material-icons">more_vert</i></a>
+            <a href="#"><i class="material-icons">undo</i></a>
+            <a href="#"><i class="material-icons">redo</i></a>
+            <a href="#" id="save_note" onclick="hideCard()">Save</a>
+          </div>
+        </div>
       </div>
-      <div class="sidebar-item">
-        <span class="material-icons-outlined hover">archive</span>
-        <span class="sidebar-text">Archive</span>
+      <div class="note-container">
+        <div class="notes" id="notes">
+
+        </div>
       </div>
-      <div class="sidebar-item">
-        <span class="material-icons-outlined hover">delete</span>
-        <span class="sidebar-text">Trash</span>
+    </section>
+
+    <section id="editPage" style="display: none;">
+      <div class="note-container">
+        <div class="notes" id="">
+
+          <h1>hello</h1>
+
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section id="remindPage" style="display: none;">
+      <div class="note-container">
+        <div class="notes" id="">
+          <h1>hello</h1>
+
+
+        </div>
+      </div>
+    </section>
+
+    <section id="archivePage" style="display: none;">
+      <div class="note-container">
+        <div class="notes" id="">
+
+          <h1>hello</h1>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="deletePage" style="display: none;">
+      <div class="corbeille">
+        <div class="notes" id="corbeille-notes">
+        <h4 class="trash">Les notes placées dans la corbeille sont supprimées au bout de 48h.</h4>
+
+
+        </div>
+      </div>
+
+    </section>
   </main>
 
+  <script>
 
-  <section class="contenu">
-    <div id="form-container" class="form-container">
-      <form>
-        <input class="note-text" type="text" placeholder="Take a note..." onclick="showCard()" />
-        <div class="form-actions">
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">check_box</span>
-            <span class="tooltip-text">New note content list</span>
-          </div>
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">brush</span>
-            <span class="tooltip-text">New note content draw</span>
-          </div>
-          <div class="tooltip">
-            <span class="material-icons-outlined hover">image</span>
-            <span class="tooltip-text">New note content image</span>
-          </div>
-        </div>
-      </form>
-    </div>
+    function showPage(pageId) {
 
-    <div class="container_card" id="card-container" style="display: none;">
-      <div class="card" id="main-card">
-        <input type="text" name="title" placeholder="Title" class="text-inputs" id="input-title">
-        <input type="text" name="text" placeholder="Take a note..." class="text-inputs" id="input-feild">
-        <div class="icons">
-          <a href="#"><i class="material-icons">touch_app</i></a>
-          <a href="#"><i class="material-icons">person_add</i></a>
-          <a href="#"><i class="material-icons" onclick="show()">color_lens</i>
-            <input type="color" id="colorPicker" style="display: none;" onchange="set_color(event)">
-          </a>
-          <a href="#"><i class="material-icons image" id="image">image</i></a>
-          <a href="#"><i class="material-icons">archive</i></a>
-          <a href="#"><i class="material-icons">more_vert</i></a>
-          <a href="#"><i class="material-icons">undo</i></a>
-          <a href="#"><i class="material-icons">redo</i></a>
-          <a href="#" id="save_note" onclick="hideCard()">Save</a>
-        </div>
-      </div> 
-    </div>
-    <div class="note-container">
-      <div class="notes" id="notes">
+      const sections = document.querySelectorAll('main section');
+      sections.forEach(section => {
+        section.style.display = 'none';
+      });
 
-      </div>
-    </div>
-  </section>
 
+      const currentPage = document.getElementById(pageId);
+      if (currentPage) {
+        currentPage.style.display = 'block';
+      }
+    }
+
+
+    function handleSidebarClick(pageId) {
+      showPage(pageId);
+    }
+  </script>
 
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="index.js"></script>
 </body>
+
+
+
+
+
+
+
+
+
+
 
 </html>

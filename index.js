@@ -20,6 +20,35 @@ document.addEventListener("click", function(event) {
 });
 
 
+
+// Background
+let notesArray = [];
+
+function addNewNote() {
+  noteCounter++;
+  const colorPicker = document.getElementById('colorPicker');
+  const newNote = document.createElement('div');
+  newNote.classList.add('notes-content');
+  newNote.classList.add('note-' + noteCounter);
+
+  document.getElementById('notes').appendChild(newNote);
+}
+
+function show() {
+  const colorPicker = document.getElementById('colorPicker');
+  colorPicker.click();
+}
+
+function set_color(event) {
+  const color = event.target.value;
+  const notes = document.querySelectorAll('.notes-content');
+
+  Array.from(notes).forEach(function (note) {
+    note.style.backgroundColor = color;
+  });
+}
+
+
 // Image
 let imageURL = '';
 
@@ -66,55 +95,53 @@ $("#save_note").click(function () {
 
 
 
-// Background
-let notesArray = [];
-
-function addNewNote() {
-  noteCounter++;
-  const colorPicker = document.getElementById('colorPicker');
-  const newNote = document.createElement('div');
-  newNote.classList.add('notes-content');
-  newNote.classList.add('note-' + noteCounter);
-
-  document.getElementById('notes').appendChild(newNote);
-}
-
-function show() {
-  const colorPicker = document.getElementById('colorPicker');
-  colorPicker.click();
-}
-
-function set_color(event) {
-  const color = event.target.value;
-  const notes = document.querySelectorAll('.notes-content');
-
-  Array.from(notes).forEach(function (note) {
-    note.style.backgroundColor = color;
-  });
-}
-
 $(document).ready(function () {
   let storedNotes = localStorage.getItem("notes");
   if (storedNotes) {
     notesArray = JSON.parse(storedNotes);
     count = notesArray.length;
 
-    // for (let i = 0; i < count; i++) {
-    //   let storedNote = notesArray[i];
-    //   addNewNote(
-    //     "color" + i,
-    //     storedNote.BackgroundColor, 
-    //     storedNote.Title,
-    //     storedNote.Content
-    //   );
-    // }
+    for (let i = 0; i < count; i++) {
+      let storedNote = notesArray[i];
+      addNewNote(
+        "color" + i,
+        storedNote.BackgroundColor, 
+        storedNote.Title,
+        storedNote.Content,
+        storedNote.ImageURL,
+        storedNote.Index 
+      );
+    }
   }
-  
 
+  $(".delete-note").click(function () {
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
+    let noteTitle = note.find(".note-title").text();
+    let noteContent = note.find("p").text();
+
+    // Déplacer la note supprimée vers la corbeille
+    let corbeilleNotes = $("#corbeille-notes");
+    let corbeilleNoteTemplate = `
+      <div class="corbeille-note">
+        <h4 class="note-title">${noteTitle}</h4>
+        <p>${noteContent}</p>
+      </div>
+    `;
+    corbeilleNotes.append(corbeilleNoteTemplate);
+
+    // Supprimer la note du tableau
+    notesArray = notesArray.filter(note => note.Index !== noteIndex);
+    let jsonStr = JSON.stringify(notesArray);
+    localStorage.setItem("notes", jsonStr);
+
+    // Supprimer la note de la page
+    note.remove();
+  });
 });
 
 
-function addNewNote(id, color, title, content, imageURL) {
+function addNewNote(id, color, title, content, imageURL, index) {
   let notes = $(".notes");
   let noteTemplate = `
     <div class="notes-content" id="notes-content" style="background-color:${color}">
@@ -128,19 +155,20 @@ function addNewNote(id, color, title, content, imageURL) {
 
   $("#" + id).click(function () {
     $(this).closest(".notes-content").remove();
-    notesArray = notesArray.filter(note => note.Index !== id);
+    notesArray = notesArray.filter(note => note.Index !== index); // Suppression de la note du tableau
     let jsonStr = JSON.stringify(notesArray);
     localStorage.setItem("notes", jsonStr);
   });
 }
 
 
+function supprimerNotesDefinitivement() {
+  let corbeilleNotes = $("#corbeille-notes").children(".corbeille-note");
+  corbeilleNotes.each(function () {
+    $(this).fadeOut(2000, function () {
+      $(this).remove();
+    });
+  });
+}
 
-
-
-
-
-
-
-
-
+setTimeout(supprimerNotesDefinitivement, 2 * 24 * 60 * 60 * 1000); // Supprimer les notes après 2 jours

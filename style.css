@@ -341,7 +341,8 @@ input:focus {
   color: black;
 }
 
-/* 
-.image-card{
-  height: 200px;
-} */
+
+/* Trash */
+.trash{
+  text-align: center;
+}
