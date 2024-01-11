@@ -26,8 +26,7 @@
           <span class="tooltip-text">Main Menu</span>
         </div>
 
-        <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" 
-          alt=""
+        <img class="" src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" alt=""
           style=" width: 40px; height: 40px;" />
         <span class="logo-text">Keep</span>
       </div>
@@ -202,6 +201,52 @@
     }
   </script>
 
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <input type="text" name="edit-title" placeholder="Title" class="text-inputs" id="edit-title">
+      <input type="text" name="edit-text" placeholder="Take a note..." class="text-inputs" id="edit-content">
+      <div class="icons">
+        <a href="#"><i class="material-icons">touch_app</i></a>
+        <a href="#"><i class="material-icons">person_add</i></a>
+        <a href="#"><i class="material-icons" onclick="show()">color_lens</i>
+          <input type="color" id="edit-colorPicker" style="display: none;" onchange="set_color(event)">
+        </a>
+        <a href="#"><i class="material-icons image" id="">image</i></a>
+        <a href="#"><i class="material-icons">archive</i></a>
+        <a href="#"><i class="material-icons">more_vert</i></a>
+        <a href="#" id="save_change" onclick="saveEdit()" class="btn-save">Save Change</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Your existing JavaScript code
+
+    // JavaScript code for opening and closing the edit modal
+    function openEditModal() {
+      document.getElementById("editModal").style.display = "block";
+    }
+
+    function closeEditModal() {
+      document.getElementById("editModal").style.display = "none";
+    }
+
+    // JavaScript code for saving the edits
+    function saveEdit() {
+      // Get the edited values from the modal
+      var editedTitle = document.getElementById("edit-title").value;
+      var editedContent = document.getElementById("edit-content").value;
+
+      // Update the note in the array (you need to implement this part)
+      // ...
+
+      // Close the edit modal
+      closeEditModal();
+    }
+
+  </script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="index.js"></script>
