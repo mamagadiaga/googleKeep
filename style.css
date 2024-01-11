@@ -236,6 +236,7 @@ input:focus {
 .contenu{
   width: 100%;
   text-align: center;
+  padding-left: 10%;
 }
 
 .card {

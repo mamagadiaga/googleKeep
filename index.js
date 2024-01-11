@@ -94,81 +94,60 @@ $("#save_note").click(function () {
 
 
 
-
 $(document).ready(function () {
   let storedNotes = localStorage.getItem("notes");
   if (storedNotes) {
     notesArray = JSON.parse(storedNotes);
-    count = notesArray.length;
-
-    for (let i = 0; i < count; i++) {
-      let storedNote = notesArray[i];
-      addNewNote(
-        "color" + i,
-        storedNote.BackgroundColor, 
-        storedNote.Title,
-        storedNote.Content,
-        storedNote.ImageURL,
-        storedNote.Index 
-      );
-    }
+    updateNotes();
   }
 
   $(".delete-note").click(function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
-    let noteTitle = note.find(".note-title").text();
-    let noteContent = note.find("p").text();
 
-    // Déplacer la note supprimée vers la corbeille
-    let corbeilleNotes = $("#corbeille-notes");
-    let corbeilleNoteTemplate = `
-      <div class="corbeille-note">
-        <h4 class="note-title">${noteTitle}</h4>
-        <p>${noteContent}</p>
-      </div>
-    `;
-    corbeilleNotes.append(corbeilleNoteTemplate);
-
-    // Supprimer la note du tableau
+    // Remove the note directly without moving to the Trash
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    let jsonStr = JSON.stringify(notesArray);
-    localStorage.setItem("notes", jsonStr);
-
-    // Supprimer la note de la page
-    note.remove();
+    updateLocalStorageAndUI();
   });
 });
 
+function updateNotes() {
+  let notes = $(".notes");
+  notes.empty();
 
-function addNewNote(id, color, title, content, imageURL, index) {
+  for (let i = 0; i < notesArray.length; i++) {
+    let note = notesArray[i];
+    addNewNote(
+      note.Index,
+      note.BackgroundColor,
+      note.Title,
+      note.Content,
+      note.ImageURL
+    );
+  }
+}
+
+function updateLocalStorageAndUI() {
+  let jsonStr = JSON.stringify(notesArray);
+  localStorage.setItem("notes", jsonStr);
+  updateNotes();
+}
+
+function addNewNote(id, color, title, content, imageURL) {
   let notes = $(".notes");
   let noteTemplate = `
-    <div class="notes-content" id="notes-content" style="background-color:${color}">
+    <div class="notes-content" id="${id}" style="background-color:${color}">
     <img src="${imageURL}" alt="Image preview">
       <h4 class="note-title">${title}</h4>
       <p>${content}</p>
-      <a href="#" id="${id}" class="delete-note"><i class="material-icons">delete</i></a>
+      <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
     </div>
   `;
   notes.append(noteTemplate);
 
   $("#" + id).click(function () {
     $(this).closest(".notes-content").remove();
-    notesArray = notesArray.filter(note => note.Index !== index); // Suppression de la note du tableau
-    let jsonStr = JSON.stringify(notesArray);
-    localStorage.setItem("notes", jsonStr);
+    notesArray = notesArray.filter(note => note.Index !== id);
+    updateLocalStorageAndUI();
   });
 }
-
-
-function supprimerNotesDefinitivement() {
-  let corbeilleNotes = $("#corbeille-notes").children(".corbeille-note");
-  corbeilleNotes.each(function () {
-    $(this).fadeOut(2000, function () {
-      $(this).remove();
-    });
-  });
-}
-
-setTimeout(supprimerNotesDefinitivement, 2 * 24 * 60 * 60 * 1000); // Supprimer les notes après 2 jours
