@@ -115,6 +115,20 @@ $(document).ready(function () {
     saveEdit();
   });
 
+  $(".archive-note").click(function () {
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
+
+    let archivedNote = notesArray.find(note => note.Index === noteIndex);
+
+    archiveArray.push(archivedNote);
+
+    notesArray = notesArray.filter(note => note.Index !== noteIndex);
+
+    updateLocalStorageAndUI();
+    updateArchive();
+  });
+
 });
 
 function updateNotes() {
@@ -148,7 +162,8 @@ function addNewNote(id, color, title, content, imageURL) {
       <p>${content}</p>
       <div class="note-actions">
       <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-        <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+      <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+      <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
       </div>
     </div>
   `;

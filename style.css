@@ -409,6 +409,9 @@ textarea {
   text-align: center;
   margin-top: 20px;
 }
-.delete-note{
+.edit-note{
+  margin-right: 80px;
+}
+.archive-note{
   margin-right: 40px;
 }
