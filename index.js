@@ -111,6 +111,11 @@ $(document).ready(function () {
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
     updateLocalStorageAndUI();
   });
+
+  $("#save_change").click(function () {
+    saveEdit();
+  });
+
 });
 
 function updateNotes() {
@@ -151,11 +156,20 @@ function addNewNote(id, color, title, content, imageURL) {
   `;
   notes.append(noteTemplate);
 
-  $("#" + id).find(".delete-note").click(function () {
-    $(this).closest(".notes-content").remove();
-    notesArray = notesArray.filter(note => note.Index !== id);
-    updateLocalStorageAndUI();
+  $("#" + id).find(".edit-note").click(function (event) {
+    event.stopPropagation();
+  
+    // Handle edit functionality here
+    let note = notesArray.find(note => note.Index === id);
+  
+    // Assuming you have an edit modal, you can populate it with the note details
+    $("#edit-title").val(note.Title);
+    $("#edit-content").val(note.Content);
+  
+    // Show the edit modal and pass the note ID
+    openEditModal(id);
   });
+  
 
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
@@ -194,5 +208,33 @@ function addNewNote(id, color, title, content, imageURL) {
   });
 }
 
-// ... The rest of your JavaScript code ...
+function saveEdit() {
+  // Get the edited values from the modal
+  var editedTitle = $("#edit-title").val();
+  var editedContent = $("#edit-content").val();
+
+  // Get the note index from the modal's data attribute
+  var id = $("#editModal").data("note-id");
+
+  // Update the note in the array
+  var noteIndex = notesArray.findIndex(note => note.Index === id);
+  if (noteIndex !== -1) {
+    notesArray[noteIndex].Title = editedTitle;
+    notesArray[noteIndex].Content = editedContent;
+  }
+
+  // Update local storage and UI
+  updateLocalStorageAndUI();
+
+  // Close the edit modal
+  closeEditModal();
+}
+function openEditModal(id) {
+  // Set the note ID in the modal's data attribute
+  $("#editModal").data("note-id", id);
+
+  // Show the edit modal
+  document.getElementById("editModal").style.display = "block";
+}
+
 
