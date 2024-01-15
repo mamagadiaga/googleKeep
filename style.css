@@ -412,6 +412,6 @@ textarea {
 .edit-note{
   margin-right: 80px;
 }
-.archive-note{
+.archive-note, .delete-archive-note{
   margin-right: 40px;
 }

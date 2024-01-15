@@ -22,7 +22,6 @@ document.addEventListener("click", function(event) {
 
 
 // Background
-let notesArray = [];
 
 function addNewNote() {
   noteCounter++;
@@ -65,6 +64,8 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 });
 
 
+let notesArray = [];
+let archiveArray = [];
 
 
 $("#save_note").click(function () {
@@ -97,11 +98,21 @@ $("#save_note").click(function () {
 
 
 $(document).ready(function () {
-  let storedNotes = localStorage.getItem("notes");
-  if (storedNotes) {
-    notesArray = JSON.parse(storedNotes);
+    let storedNotes = localStorage.getItem("notes");
+    if (storedNotes) {
+      notesArray = JSON.parse(storedNotes);
+    }
+  
+    let storedArchive = localStorage.getItem("archive");
+    if (storedArchive) {
+      archiveArray = JSON.parse(storedArchive);
+    }
+  
     updateNotes();
-  }
+    updateArchive();
+
+
+  
 
   $(".delete-note").click(function () {
     let note = $(this).closest(".notes-content");
@@ -118,16 +129,17 @@ $(document).ready(function () {
   $(".archive-note").click(function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
-
+  
     let archivedNote = notesArray.find(note => note.Index === noteIndex);
-
+  
     archiveArray.push(archivedNote);
-
+  
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
-
+  
     updateLocalStorageAndUI();
     updateArchive();
   });
+  
 
 });
 
@@ -147,10 +159,16 @@ function updateNotes() {
   }
 }
 
+
 function updateLocalStorageAndUI() {
-  let jsonStr = JSON.stringify(notesArray);
-  localStorage.setItem("notes", jsonStr);
+  let jsonNotes = JSON.stringify(notesArray);
+  localStorage.setItem("notes", jsonNotes);
+
+  let jsonArchive = JSON.stringify(archiveArray);
+  localStorage.setItem("archive", jsonArchive);
+
   updateNotes();
+  updateArchive();
 }
 
 function addNewNote(id, color, title, content, imageURL) {
@@ -233,4 +251,52 @@ function openEditModal(id) {
   document.getElementById("editModal").style.display = "block";
 }
 
+function updateArchive() {
+  let archive = $(".archive");
+  archive.empty();
+
+  for (let i = 0; i < archiveArray.length; i++) {
+    let archivedNote = archiveArray[i];
+    addArchivedNote(
+      archivedNote.Index,
+      archivedNote.BackgroundColor,
+      archivedNote.Title,
+      archivedNote.Content,
+      archivedNote.ImageURL
+    );
+  }
+}
+
+
+function addArchivedNote(id, color, title, content, imageURL) {
+  let archive = $(".archive"); // Assurez-vous que vous avez une div avec la classe 'archive' dans votre code HTML
+  let archiveTemplate = `
+    <div class="notes-content" id="${id}" style="background-color:${color}">
+    <img src="${imageURL}" alt="Image preview">
+      <h4 class="note-title">${title}</h4>
+      <p>${content}</p>
+      <div class="note-actions">
+        <a href="#" class="delete-archive-note"><i class="material-icons">delete</i></a>
+        <a href="#" class="restore-archive-note"><i class="material-icons">restore</i></a>
+      </div>
+    </div>
+  `;
+  archive.append(archiveTemplate);
+
+  $("#" + id).find(".delete-archive-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+    updateLocalStorageAndUI();
+    updateArchive();
+  });
+
+  $("#" + id).find(".restore-archive-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    let restoredNote = archiveArray.find(note => note.Index === noteIndex);
+    notesArray.push(restoredNote);
+    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+    updateLocalStorageAndUI();
+    updateArchive();
+  });
+}
 
