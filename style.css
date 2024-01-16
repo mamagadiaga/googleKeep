@@ -68,7 +68,6 @@ nav {
   margin-left: 10px;
   background: #f1f3f4;
   width: 692px;
-  /* height: 48px; */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -181,7 +180,7 @@ input:focus {
   border-radius: 8px;
 }
 .form-container form {
-  /* width: 80%; */
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -250,7 +249,7 @@ input:focus {
 }
 
 .card {
-  /* width: 70%; */
+  width: 50%;
   background: #fff;
   border-radius: 2px;
   display: inline-block;
