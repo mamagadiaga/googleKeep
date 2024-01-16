@@ -64,9 +64,16 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 });
 
 
+
+
+
+
+
+
+
 let notesArray = [];
 let archiveArray = [];
-
+let trashArray = []; 
 
 $("#save_note").click(function () {
 
@@ -98,49 +105,80 @@ $("#save_note").click(function () {
 
 
 $(document).ready(function () {
-    let storedNotes = localStorage.getItem("notes");
-    if (storedNotes) {
-      notesArray = JSON.parse(storedNotes);
-    }
-  
-    let storedArchive = localStorage.getItem("archive");
-    if (storedArchive) {
-      archiveArray = JSON.parse(storedArchive);
-    }
-  
-    updateNotes();
-    updateArchive();
+  let storedNotes = localStorage.getItem("notes");
+  if (storedNotes) {
+    notesArray = JSON.parse(storedNotes);
+  }
 
+  let storedArchive = localStorage.getItem("archive");
+  if (storedArchive) {
+    archiveArray = JSON.parse(storedArchive);
+  }
 
-  
+  let storedTrash = localStorage.getItem("trash");
+  if (storedTrash) {
+    trashArray = JSON.parse(storedTrash); 
+  }
+
+  updateNotes();
+  updateArchive();
+  updateTrash();
 
   $(".delete-note").click(function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
 
+    let deletedNote = notesArray.find(note => note.Index === noteIndex);
+    trashArray.push(deletedNote);
+
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
     updateLocalStorageAndUI();
+    updateTrash();
   });
 
+  
+    
+    
   $("#save_change").click(function () {
     saveEdit();
   });
 
-  $(".archive-note").click(function () {
+   $(".notes").on("click", ".delete-note", function () {
+        let note = $(this).closest(".notes-content");
+        let noteIndex = note.attr("id");
+
+        let deletedNote = notesArray.find(note => note.Index === noteIndex);
+        trashArray.push(deletedNote);
+
+        notesArray = notesArray.filter(note => note.Index !== noteIndex);
+        updateLocalStorageAndUI();
+        updateTrash();
+    });
+
+    $(".notes").on("click", ".archive-note", function () {
+        let note = $(this).closest(".notes-content");
+        let noteIndex = note.attr("id");
+
+        let archivedNote = notesArray.find(note => note.Index === noteIndex);
+        archiveArray.push(archivedNote);
+
+        notesArray = notesArray.filter(note => note.Index !== noteIndex);
+        updateLocalStorageAndUI();
+        updateArchive();
+    });
+
+  $(".restore-trash-note").click(function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
-  
-    let archivedNote = notesArray.find(note => note.Index === noteIndex);
-  
-    archiveArray.push(archivedNote);
-  
-    notesArray = notesArray.filter(note => note.Index !== noteIndex);
-  
-    updateLocalStorageAndUI();
-    updateArchive();
-  });
-  
 
+    let restoredNote = trashArray.find(note => note.Index === noteIndex);
+
+    notesArray.push(restoredNote);
+    trashArray = trashArray.filter(note => note.Index !== noteIndex);
+
+    updateLocalStorageAndUI();
+    updateTrash();
+  });
 });
 
 function updateNotes() {
@@ -167,8 +205,12 @@ function updateLocalStorageAndUI() {
   let jsonArchive = JSON.stringify(archiveArray);
   localStorage.setItem("archive", jsonArchive);
 
+  let jsonTrash = JSON.stringify(trashArray); // Ajout de trashArray
+  localStorage.setItem("trash", jsonTrash); // Ajout de trashArray
+
   updateNotes();
   updateArchive();
+  updateTrash(); // Ajout de trashArray
 }
 
 function addNewNote(id, color, title, content, imageURL) {
@@ -269,7 +311,7 @@ function updateArchive() {
 
 
 function addArchivedNote(id, color, title, content, imageURL) {
-  let archive = $(".archive"); // Assurez-vous que vous avez une div avec la classe 'archive' dans votre code HTML
+  let archive = $(".archive"); 
   let archiveTemplate = `
     <div class="notes-content" id="${id}" style="background-color:${color}">
     <img src="${imageURL}" alt="Image preview">
@@ -300,3 +342,54 @@ function addArchivedNote(id, color, title, content, imageURL) {
   });
 }
 
+
+
+function updateTrash() {
+  let trash = $("#trashPage");
+  trash.empty();
+
+  for (let i = 0; i < trashArray.length; i++) {
+    let trashedNote = trashArray[i];
+    addTrashedNote(
+      trashedNote.Index,
+      trashedNote.BackgroundColor,
+      trashedNote.Title,
+      trashedNote.Content,
+      trashedNote.ImageURL
+    );
+  }
+}
+
+// Ajout de la fonction addTrashedNote
+function addTrashedNote(id, color, title, content, imageURL) {
+ let trash = $("#trashPage ");
+  
+  let trashTemplate = `
+    <div class="notes-content" id="${id}" style="background-color:${color}">
+    <img src="${imageURL}" alt="Image preview">
+      <h4 class="note-title">${title}</h4>
+      <p>${content}</p>
+      <div class="note-actions">
+        <a href="#" class="delete-trash-note"><i class="material-icons">delete</i></a>
+        <a href="#" class="restore-trash-note"><i class="material-icons">restore</i></a>
+      </div>
+    </div>
+  `;
+  trash.append(trashTemplate);
+
+  $("#" + id).find(".delete-trash-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    trashArray = trashArray.filter(note => note.Index !== noteIndex);
+    updateLocalStorageAndUI();
+    updateTrash();
+  });
+
+  $("#" + id).find(".restore-trash-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    let restoredNote = trashArray.find(note => note.Index === noteIndex);
+    notesArray.push(restoredNote);
+    trashArray = trashArray.filter(note => note.Index !== noteIndex);
+    updateLocalStorageAndUI();
+    updateTrash();
+  });
+}
