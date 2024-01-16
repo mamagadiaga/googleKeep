@@ -115,9 +115,9 @@ $(document).ready(function () {
     archiveArray = JSON.parse(storedArchive);
   }
 
-  let storedTrash = localStorage.getItem("trash"); // Ajout de cette ligne
+  let storedTrash = localStorage.getItem("trash");
   if (storedTrash) {
-    trashArray = JSON.parse(storedTrash); // Ajout de cette ligne
+    trashArray = JSON.parse(storedTrash); 
   }
 
   updateNotes();
@@ -143,28 +143,29 @@ $(document).ready(function () {
     saveEdit();
   });
 
-  $(".archive-note").click(function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
-  
-    let archivedNote = notesArray.find(note => note.Index === noteIndex);
-  
-    archiveArray.push(archivedNote);
-  
-    notesArray = notesArray.filter(note => note.Index !== noteIndex);
-  
-    updateLocalStorageAndUI();
-    updateArchive();
-  });
-  
-  $(".delete-trash-note").click(function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
+   $(".notes").on("click", ".delete-note", function () {
+        let note = $(this).closest(".notes-content");
+        let noteIndex = note.attr("id");
 
-    trashArray = trashArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateTrash();
-  });
+        let deletedNote = notesArray.find(note => note.Index === noteIndex);
+        trashArray.push(deletedNote);
+
+        notesArray = notesArray.filter(note => note.Index !== noteIndex);
+        updateLocalStorageAndUI();
+        updateTrash();
+    });
+
+    $(".notes").on("click", ".archive-note", function () {
+        let note = $(this).closest(".notes-content");
+        let noteIndex = note.attr("id");
+
+        let archivedNote = notesArray.find(note => note.Index === noteIndex);
+        archiveArray.push(archivedNote);
+
+        notesArray = notesArray.filter(note => note.Index !== noteIndex);
+        updateLocalStorageAndUI();
+        updateArchive();
+    });
 
   $(".restore-trash-note").click(function () {
     let note = $(this).closest(".notes-content");
