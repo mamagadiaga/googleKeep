@@ -64,13 +64,6 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 });
 
 
-
-
-
-
-
-
-
 let notesArray = [];
 let archiveArray = [];
 let trashArray = []; 
