@@ -67,13 +67,13 @@
     <aside>
       <div class="sidebar">
         <div class="sidebar-item active" onclick="handleSidebarClick('notePage')">
-            <span class="material-icons-outlined hover">lightbulb</span>
-            <span class="sidebar-text">Notes</span>
+          <span class="material-icons-outlined hover">lightbulb</span>
+          <span class="sidebar-text">Notes</span>
         </div>
 
         <div class="sidebar-item" onclick="handleSidebarClick('remindPage')">
-            <span class="material-icons-outlined hover">notifications</span>
-            <span class="sidebar-text">Reminders</span>
+          <span class="material-icons-outlined hover">notifications</span>
+          <span class="sidebar-text">Reminders</span>
         </div>
         <div class="sidebar-item" onclick="handleSidebarClick('editPage')">
           <span class="material-icons-outlined hover">edit</span>
@@ -157,52 +157,61 @@
     </section>
 
     <section id="archivePage" style="display: none;">
-      <div class="contenu archive">
+      <div class="note-containerPage">
+        <div class="notesPage">
+          <div class="contenu archive">
+
+          </div>
+        </div>
       </div>
     </section>
-    
+
 
     <section id="deletePage" style="display: none;">
       <h4 class="trash">Les notes placées dans la corbeille sont supprimées au bout de 48h.</h4>
-      <div class="corbeille" id="trashPage">
-        <div id="corbeille-notes" class="corbeille-notes">
+      <div class="note-containerPage">
+        <div class="notesPage">
+          <div class="corbeille" id="trashPage">
+            <div id="corbeille-notes" class="corbeille-notes">
 
-        </div> <!-- Utilisez l'ID corbeille-notes -->
-    </div>
-    
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
-    
+
   </main>
 
   <script>
 
-function showPage(pageId) {
-    const sections = document.querySelectorAll('main section');
-    sections.forEach(section => {
+    function showPage(pageId) {
+      const sections = document.querySelectorAll('main section');
+      sections.forEach(section => {
         section.style.display = 'none';
-    });
+      });
 
-    const currentPage = document.getElementById(pageId);
-    if (currentPage) {
+      const currentPage = document.getElementById(pageId);
+      if (currentPage) {
         currentPage.style.display = 'block';
+      }
     }
-}
 
-function handleSidebarClick(pageId) {
-    showPage(pageId);
+    function handleSidebarClick(pageId) {
+      showPage(pageId);
 
-  
-    const sidebarItems = document.querySelectorAll('.sidebar-item');
-    sidebarItems.forEach(item => {
+
+      const sidebarItems = document.querySelectorAll('.sidebar-item');
+      sidebarItems.forEach(item => {
         item.classList.remove('active');
-    });
+      });
 
-    
-    const clickedItem = document.querySelector(`.sidebar-item[onclick="handleSidebarClick('${pageId}')"]`);
-    if (clickedItem) {
+
+      const clickedItem = document.querySelector(`.sidebar-item[onclick="handleSidebarClick('${pageId}')"]`);
+      if (clickedItem) {
         clickedItem.classList.add('active');
+      }
     }
-}
 
 
   </script>
