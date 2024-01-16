@@ -207,6 +207,7 @@ input:focus {
   padding-left: 10px;
 }
 .form-actions {
+  float: right;
   display: flex;
 }
 
@@ -314,7 +315,7 @@ input:focus {
 }
 .note-container {
   text-align: center;
-  width: 100%;
+  width: 80%;
   overflow: hidden;
 }
 
