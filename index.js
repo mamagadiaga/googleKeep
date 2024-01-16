@@ -143,29 +143,28 @@ $(document).ready(function () {
     saveEdit();
   });
 
-   $(".notes").on("click", ".delete-note", function () {
-        let note = $(this).closest(".notes-content");
-        let noteIndex = note.attr("id");
+  $(".archive-note").click(function () {
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
+  
+    let archivedNote = notesArray.find(note => note.Index === noteIndex);
+  
+    archiveArray.push(archivedNote);
+  
+    notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  
+    updateLocalStorageAndUI();
+    updateArchive();
+  });
+  
+  $(".delete-trash-note").click(function () {
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
 
-        let deletedNote = notesArray.find(note => note.Index === noteIndex);
-        trashArray.push(deletedNote);
-
-        notesArray = notesArray.filter(note => note.Index !== noteIndex);
-        updateLocalStorageAndUI();
-        updateTrash();
-    });
-
-    $(".notes").on("click", ".archive-note", function () {
-        let note = $(this).closest(".notes-content");
-        let noteIndex = note.attr("id");
-
-        let archivedNote = notesArray.find(note => note.Index === noteIndex);
-        archiveArray.push(archivedNote);
-
-        notesArray = notesArray.filter(note => note.Index !== noteIndex);
-        updateLocalStorageAndUI();
-        updateArchive();
-    });
+    trashArray = trashArray.filter(note => note.Index !== noteIndex);
+    updateLocalStorageAndUI();
+    updateTrash();
+  });
 
   $(".restore-trash-note").click(function () {
     let note = $(this).closest(".notes-content");
