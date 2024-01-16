@@ -404,7 +404,7 @@ textarea {
 
 
 
-/* Trash */
+/* other pages */
 .trash{
   text-align: center;
   margin-top: 20px;
@@ -412,6 +412,11 @@ textarea {
 .edit-note{
   margin-right: 80px;
 }
-.archive-note, .delete-archive-note{
+.archive-note, .delete-archive-note, .delete-trash-note{
   margin-right: 40px;
+}
+.archive, .corbeille{
+  width: 100%;
+  text-align: center;
+  padding-left: 20%;
 }
