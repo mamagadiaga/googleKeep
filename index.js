@@ -71,6 +71,13 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 
 
 
+
+
+
+
+
+
+
 let notesArray = [];
 let archiveArray = [];
 let trashArray = []; 
@@ -105,24 +112,21 @@ $("#save_note").click(function () {
 
 
 $(document).ready(function () {
-  let storedNotes = localStorage.getItem("notes");
-  if (storedNotes) {
-    notesArray = JSON.parse(storedNotes);
-  }
+    let storedNotes = localStorage.getItem("notes");
+    if (storedNotes) {
+      notesArray = JSON.parse(storedNotes);
+    }
+  
+    let storedArchive = localStorage.getItem("archive");
+    if (storedArchive) {
+      archiveArray = JSON.parse(storedArchive);
+    }
+  
+    updateNotes();
+    updateArchive();
 
-  let storedArchive = localStorage.getItem("archive");
-  if (storedArchive) {
-    archiveArray = JSON.parse(storedArchive);
-  }
 
-  let storedTrash = localStorage.getItem("trash");
-  if (storedTrash) {
-    trashArray = JSON.parse(storedTrash); 
-  }
-
-  updateNotes();
-  updateArchive();
-  updateTrash();
+  
 
   $(".delete-note").click(function () {
     let note = $(this).closest(".notes-content");
