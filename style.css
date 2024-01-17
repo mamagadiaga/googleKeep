@@ -187,15 +187,29 @@ input:focus {
     justify-content: center;
     align-items: center;
   }
+  .contenu{
+    padding-left: 10%;
+  }
 }
 
 
 
 
 /* MAIN */
+
+.contenu,
+.deletPage {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding-left: 20%;
+  padding-top: 0.5rem;
+  
+}
+
 .form-container {
   background: #fff;
-  width: 50%;
+  width: 60%;
   margin: 32px auto;
   height: 45px;
   box-shadow: 0 2px 3px 0 rgba(37, 38, 38, 0.3);
@@ -267,17 +281,16 @@ input:focus {
 }
 
 
-
-
-.contenu,
-.deletPage {
-  width: 100%;
-  height: auto;
-  text-align: center;
-  padding-left: 20%;
-  padding-top: 0.5rem;
-  
+@media screen and  (max-width: 650px) {
+  .form-actions {
+   /* display: none; */
+  } 
+  .form-container{
+    width: 80%;
+  }
 }
+
+
 
 .card {
   width: 50%;
@@ -347,7 +360,7 @@ input:focus {
 
 .note-container {
   text-align: center;
-  width: 80%;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -355,12 +368,8 @@ input:focus {
   border-radius: 5px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  /* Adjust the minmax values as needed */
   gap: 10px;
   justify-content: flex-start;
-  /* Align to the start (left) */
-  /* margin: 10px;
-  padding: 10px; */
 }
 
 .notes-content {
@@ -374,11 +383,8 @@ input:focus {
   word-wrap: break-word;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  width: 250px;
-  height: 150px;
-  margin: 20px;
+  text-align: start;
+  min-height: 150px; 
 }
 
 
