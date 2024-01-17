@@ -16,6 +16,15 @@ refreshIcon.addEventListener('click', function() {
 });
 
 
+// List-view
+const listViewIcon = document.getElementById('listViewIcon');
+const noteContainer = document.querySelector('.note-container');
+
+listViewIcon.addEventListener('click', function() {
+  noteContainer.classList.toggle('list-view');
+});
+
+
 
 function showCard() {
   document.getElementById("card-container").style.display = "block";
