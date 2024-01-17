@@ -20,6 +20,18 @@ document.addEventListener("click", function (event) {
 });
 
 
+
+// Hover carte
+$(".notes").on("mouseenter", ".notes-content", function () {
+  $(this).find(".note-actions").show();
+});
+
+$(".notes").on("mouseleave", ".notes-content", function () {
+  $(this).find(".note-actions").hide();
+});
+
+
+
 // Background
 function show() {
   const colorPicker = document.getElementById('colorPicker');
@@ -198,16 +210,19 @@ function updateLocalStorageAndUI() {
 function addNewNote(id, color, title, content, imageURL) {
   let notes = $(".notes");
   let noteTemplate = `
-    <div class="notes-content" id="${id}" style="background-color:${color}">
-      ${imageURL ? `<img src="${imageURL}" style="height: auto;">` : ''}
-      <h4 class="note-title" style="padding: 20px;">${title}</h4>
-      <p style="padding-left: 20px;">${content}</p>
-      <div class="note-actions" style="margin-top: 20px">
-        <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-        <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
-        <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
-      </div>
-    </div>
+  <div class="notes-content" id="${id}" style="background-color:${color}">
+  <div class="card-container">
+    ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+    <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+    <p style="padding-left: 20px;">${content}</p>
+  </div>
+  <div class="note-actions">
+    <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+    <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+    <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+  </div>
+</div>
+
   `;
   notes.append(noteTemplate);
 

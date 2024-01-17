@@ -15,6 +15,13 @@ main {
 .material-icons-outlined {
   padding: 10px;
 }
+.material-icons {
+  color: rgba(0, 0, 0, 0.443);
+  font-size: 20px;
+}
+.material-icons:hover {
+  color: rgb(0, 0, 0);
+}
 
 .hover:hover {
   /* background: #f1f3f4; */
@@ -390,6 +397,13 @@ input:focus {
 }
 
 
+.notes-content .note-actions {
+  display: none;
+}
+
+.notes-content:hover .note-actions {
+  display: block;
+}
 
 
 /* Edit */
