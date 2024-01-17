@@ -20,32 +20,11 @@ document.addEventListener("click", function(event) {
 });
 
 
-
 // Background
-
-function addNewNote() {
-  noteCounter++;
-  const colorPicker = document.getElementById('colorPicker');
-  const newNote = document.createElement('div');
-  newNote.classList.add('notes-content');
-  newNote.classList.add('note-' + noteCounter);
-
-  document.getElementById('notes').appendChild(newNote);
-}
-
 function show() {
-  const colorPicker = document.getElementById('colorPicker');
-  colorPicker.click();
-}
-
-function set_color(event) {
-  const color = event.target.value;
-  const notes = document.querySelectorAll('.notes-content');
-
-  Array.from(notes).forEach(function (note) {
-    note.style.backgroundColor = color;
-  });
-}
+    const colorPicker = document.getElementById('colorPicker');
+    colorPicker.click();
+  }
 
 
 // Image
@@ -76,10 +55,9 @@ let archiveArray = [];
 let trashArray = []; 
 
 $("#save_note").click(function () {
-
   let title = $("#input-title").val();
   let content = $("#input-feild").val();
-  let bg_color = $("#notes-content").css("background-color");
+  let bgColor = $("#colorPicker").val();
   let index = "colour" + Math.ceil(Math.random() * 3);
 
   if (title !== "" || content !== "") {
@@ -87,27 +65,24 @@ $("#save_note").click(function () {
 
     notesArray.push({
       Index: index,
-      Color: bg_color,
+      Color: bgColor,  // Utilisez la couleur sélectionnée
       Title: title,
       Content: content,
-      BackgroundColor: bg_color,
+      BackgroundColor: bgColor,
       ImageURL: imageURL,
     });
 
     let jsonStr = JSON.stringify(notesArray);
     localStorage.setItem("notes", jsonStr);
-    addNewNote(index, bg_color, title, content, imageURL);
-
+    addNewNote(index, bgColor, title, content, imageURL);
 
     // Vider les champs
     $("#input-title").val("");
     $("#input-feild").val("");
-    $("#colorPicker").val("#ffffff");
+    $("#colorPicker").val("#ffffff");  // Réinitialisez le sélecteur de couleur
     imageURL = "";
   }
 });
-
-
 
 
 
