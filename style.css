@@ -194,7 +194,7 @@ input:focus {
 
 .contenu,
 .deletPage {
-  width: 100%;
+  width: 80%;
   height: auto;
   text-align: center;
   padding-left: 20%;
@@ -393,8 +393,13 @@ input:focus {
   align-items: center;
 }
 
-.notes-content.list-view {
+/* .notes-content.list-view {
   width: 100%; 
+  max-width: 500px; 
+
+} */
+.notes.list-view {
+  width: 100%;
   max-width: 500px; 
   margin: 0 auto;
 }
@@ -446,7 +451,7 @@ input:focus {
 input,
 textarea {
   width: 100%;
-  padding: 10px;
+  padding: 7px;
   margin-top: 5px;
   margin-bottom: 10px;
   display: inline-block;
@@ -530,9 +535,9 @@ textarea {
 
 
 @media screen and  (max-width: 650px) {
-  /* .none {
+  .none {
    display: none;
-  }  */
+  } 
   .icons a {
     padding: 0;
   }

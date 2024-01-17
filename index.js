@@ -18,10 +18,10 @@ refreshIcon.addEventListener('click', function() {
 
 // List-view
 const listViewIcon = document.getElementById('listViewIcon');
-const noteContainer = document.querySelector('.note-container');
+const notes = document.querySelector('.notes');
 
 listViewIcon.addEventListener('click', function() {
-  noteContainer.classList.toggle('list-view');
+  notes.classList.toggle('list-view');
 });
 
 
