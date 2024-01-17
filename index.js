@@ -1,3 +1,17 @@
+// Sidebar
+const menuIcon = document.querySelector('.material-icons-outlined.hover');
+const sidebar = document.querySelector('.sidebar');
+const contenu = document.querySelector('.contenu');
+
+// Ajouter un écouteur d'événement pour le clic sur l'icône de menu
+menuIcon.addEventListener('click', () => {
+  // Ajouter ou supprimer la classe 'closed' pour masquer ou afficher le texte de la barre latérale
+  sidebar.classList.toggle('closed');
+  contenu.classList.toggle('closed');
+});
+
+
+
 function showCard() {
   document.getElementById("card-container").style.display = "block";
   document.getElementById("form-container").style.display = "none";
@@ -222,7 +236,6 @@ function addNewNote(id, color, title, content, imageURL) {
     <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
   </div>
 </div>
-
   `;
   notes.append(noteTemplate);
 

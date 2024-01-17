@@ -122,6 +122,7 @@ input:focus {
 /* SIDEBAR */
 .sidebar {
   position: fixed;
+  height: auto;
   left: 0;
   top: 64px;
   display: flex;
@@ -130,6 +131,7 @@ input:focus {
   width: 20%;
   overflow-x: hidden;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 .active {
@@ -171,34 +173,20 @@ input:focus {
   margin-left: 15px;
 }
 
-@media screen and (max-width: 868px) {
-  .sidebar-item .sidebar-text {
-    display: none;
-  }
-
-  .sidebar {
-    width: auto;
-  }
-
-  .sidebar-item {
-    padding: 8px;
-  }
-
-  .sidebar-item .material-icons-outlined {
-    font-size: 1.5rem;
-  }
-
-
-  .sidebar-item span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .contenu{
-    padding-left: 10%;
-  }
+.sidebar.closed .sidebar-text {
+  display: none;
 }
-
+.sidebar.closed {
+  width: 60px; 
+}
+.sidebar-item.closed {
+  
+  background-color: #fef0c3;
+  border-radius: 50%;
+}
+.contenu.closed{
+  padding-left: 10%;
+}
 
 
 
@@ -282,19 +270,10 @@ input:focus {
 }
 
 
-@media screen and  (max-width: 650px) {
-  .form-actions {
-   /* display: none; */
-  } 
-  .form-container{
-    width: 80%;
-  }
-}
-
 
 
 .card {
-  width: 50%;
+  width: 60%;
   background: #fff;
   border-radius: 2px;
   display: inline-block;
@@ -332,7 +311,6 @@ input:focus {
 }
 
 .icons {
-  display: inline;
   /* margin: 10px; */
 }
 
@@ -384,7 +362,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   text-align: start;
-  min-height: 150px; 
+  min-height: 130px; 
 }
 
 
@@ -493,4 +471,62 @@ textarea {
   width: 100%;
   text-align: center;
   padding-left: 20%;
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 868px) {
+  .sidebar-item .sidebar-text {
+    display: none;
+  }
+
+  .sidebar {
+    width: auto;
+  }
+
+  .sidebar-item {
+    padding: 8px;
+  }
+
+  .sidebar-item .material-icons-outlined {
+    font-size: 1.5rem;
+  }
+
+
+  .sidebar-item span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .contenu{
+    padding-left: 15%;
+  }
+.card{
+  width: 80%;
+}
+}
+
+
+@media screen and  (max-width: 650px) {
+  /* .none {
+   display: none;
+  }  */
+  .icons a {
+    padding: 0;
+  }
+  .form-container{
+    width: 80%;
+  }
+}
+@media screen and  (max-width: 530px) {
+  .none {
+   display: none;
+  } 
 }
