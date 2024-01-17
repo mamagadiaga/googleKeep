@@ -3,11 +3,16 @@ const menuIcon = document.querySelector('.material-icons-outlined.hover');
 const sidebar = document.querySelector('.sidebar');
 const contenu = document.querySelector('.contenu');
 
-// Ajouter un écouteur d'événement pour le clic sur l'icône de menu
 menuIcon.addEventListener('click', () => {
-  // Ajouter ou supprimer la classe 'closed' pour masquer ou afficher le texte de la barre latérale
   sidebar.classList.toggle('closed');
   contenu.classList.toggle('closed');
+});
+
+// Refresh
+const refreshIcon = document.getElementById('refreshIcon');
+
+refreshIcon.addEventListener('click', function() {
+  location.reload();
 });
 
 
