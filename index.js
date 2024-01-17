@@ -199,13 +199,13 @@ function addNewNote(id, color, title, content, imageURL) {
   let notes = $(".notes");
   let noteTemplate = `
     <div class="notes-content" id="${id}" style="background-color:${color}">
-      <img src="${imageURL}" style="height: px">
-      <h4 class="note-title">${title}</h4>
-      <p>${content}</p>
+      ${imageURL ? `<img src="${imageURL}" style="height: auto;">` : ''}
+      <h4 class="note-title" style="padding: 20px;">${title}</h4>
+      <p style="padding-left: 20px;">${content}</p>
       <div class="note-actions" style="margin-top: 20px">
-      <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-      <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
-      <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+        <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+        <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+        <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
       </div>
     </div>
   `;

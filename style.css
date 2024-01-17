@@ -227,21 +227,15 @@ input:focus {
 }
 
 .note-title {
-  margin-top: 10px;
   border: none;
   font-size: 1rem;
-  height: 100%;
   margin-right: 10px;
 }
 
 .note-text {
   border: none;
   font-size: 1rem;
-  padding: 10px;
-  margin-left: 10px;
   width: 100%;
-  margin-right: 10px;
-  padding-left: 10px;
 }
 
 .form-actions {
@@ -375,7 +369,6 @@ input:focus {
 .notes-content {
   background: #fff;
   border-radius: 10px;
-  padding: 20px;
   border: #a0999933 1px solid;
   color: #636363;
   position: relative;
