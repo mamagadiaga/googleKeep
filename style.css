@@ -46,17 +46,24 @@ main {
   visibility: visible;
 }
 
-
+body {
+  margin-top: 64px; /* Remplacez 64px par la hauteur exacte de votre barre de navigation */
+}
 /* Navbar */
 nav {
   display: flex;
+  height: 64px;
   justify-content: space-between;
   align-items: center;
-  height: 64px;
   border-bottom: 1px solid #dadce0;
   padding: 8px;
+  top: 0;
   margin: 0 10px;
   color: #5f6368;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
 }
 
 .logo-area {
@@ -69,6 +76,7 @@ nav {
 }
 
 .search-area {
+  height: 45px;
   margin-left: 10px;
   background: #f1f3f4;
   width: 692px;
@@ -77,10 +85,12 @@ nav {
   align-items: center;
 }
 
+.petitInput{
+  height: 20px;
+}
 .search-area input {
   border: none;
   background: #f1f3f4;
-  height: 100%;
   font-size: 1rem;
   margin-left: 10px;
 }
@@ -265,6 +275,8 @@ input:focus {
   height: auto;
   text-align: center;
   padding-left: 20%;
+  padding-top: 0.5rem;
+  
 }
 
 .card {
