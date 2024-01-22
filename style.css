@@ -156,6 +156,7 @@ input:focus {
   padding: 3px 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .sidebar-item .sidebar-text {
@@ -310,9 +311,6 @@ input:focus {
   margin-bottom: 10px;
 }
 
-.icons {
-  /* margin: 10px; */
-}
 
 .icons a {
   color: #636363;
@@ -383,10 +381,6 @@ input:focus {
   display: block;
 }
 
-/* Ajoutez ces styles CSS à votre feuille de style existante */
-
-/* Ajoutez ces styles CSS à votre feuille de style existante */
-
 .note-container.list-view {
   display: flex;
   flex-direction: column;
@@ -405,7 +399,7 @@ input:focus {
 }
 
 /* Edit */
-.modal {
+.modal, .modall {
   display: none;
   position: fixed;
   top: 0;
@@ -421,6 +415,14 @@ input:focus {
   max-width: 500px;
   margin: auto;
 }
+.modal-contentl {
+  max-width: 500px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
 
 .modal-content {
   background-color: #fefefe;
@@ -430,15 +432,15 @@ input:focus {
   width: 80%;
 }
 
-.close {
+.close, .closel {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover, .closel:hover,
+.close:focus .closel:focus{
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -549,4 +551,144 @@ textarea {
   .none {
    display: none;
   } 
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Labels */
+
+.containerLabel {
+  display: block;
+  width: 400px;
+  margin: 10px auto 100px;
+  background-color: #fff;
+  padding: 0px 10px 10px 10px;
+}
+
+
+#task-list {
+  margin: 0;
+  padding: 0;
+}
+
+#task-list li * {
+  float: left;
+}
+
+#task-list li,
+h6 {
+  clear: both;
+  list-style: none;
+}
+
+input,
+button {
+  outline: none;
+}
+
+button {
+  background: none;
+  border: 0px;
+  color: #888;
+  font-size: 15px;
+  width: 30px;
+  margin: 10px 0 0;
+  cursor: pointer;
+}
+button:hover {
+  color: #333;
+}
+
+
+/* Heading */
+
+h6,
+label[for='new-task'] {
+  color: #333;
+  padding: 20px 0 10px;
+  margin: 0;
+  font-size: 15px;
+}
+
+#new-task  {
+  margin: 0;
+  font-size: 13px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  color: #888;
+}
+
+input[type="text"]:focus {
+  color: #333;
+}
+
+
+/* New Task */
+
+label[for='new-task'] {
+  display: block;
+  margin: 0 0 20px;
+  margin-left: 20px;
+}
+
+input#new-task {
+  float: left;
+  width: 318px;
+}
+
+p>button:hover {
+  color: #0FC57C;
+}
+
+
+/* Task list */
+
+#task-list li {
+  overflow: hidden;
+  width: 318px;
+}
+
+#task-list li>input[type="checkbox"] {
+  position: relative;
+}
+
+#task-list li>label {
+  font-size: 15px;
+  width: 258px;
+  padding-top: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+#task-list li>input[type="text"] {
+  width: 258px;
+}
+
+#task-list li>.delete:hover {
+  color: #CF2323;
+}
+
+
+
+/* Edit Task */
+
+#task-list li input[type=text] {
+  display: none;
+}
+
+#task-list li.editMode input[type=text] {
+  display: block;
+  border: none;
+}
+
+#task-list li.editMode label {
+  display: none;
 }

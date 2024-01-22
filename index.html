@@ -42,11 +42,11 @@
         <div class="tooltip" id="refreshIcon">
           <span class="material-icons-outlined hover">refresh</span>
           <span class="tooltip-text">Refresh</span>
-        </div>        
+        </div>
         <div class="tooltip" id="listViewIcon">
           <span class="material-icons-outlined hover">view_agenda</span>
           <span class="tooltip-text">List View</span>
-        </div>        
+        </div>
         <div class="tooltip">
           <span class="material-icons-outlined hover">settings</span>
           <span class="tooltip-text">Settings</span>
@@ -64,7 +64,7 @@
       </div>
     </nav>
 
-    <aside >
+    <aside>
       <div class="sidebar">
         <div class="sidebar-item active" onclick="handleSidebarClick('notePage')">
           <span class="material-icons-outlined hover">lightbulb</span>
@@ -75,7 +75,7 @@
           <span class="material-icons-outlined hover">notifications</span>
           <span class="sidebar-text">Reminders</span>
         </div>
-        <div class="sidebar-item" onclick="handleSidebarClick('editPage')">
+        <div class="sidebar-item" onclick="openEditModall()">
           <span class="material-icons-outlined hover">edit</span>
           <span class="sidebar-text">Edit Labels</span>
         </div>
@@ -173,6 +173,22 @@
 
   </main>
 
+<!-- Edit labels -->
+  <div class="modall" id="editLabel">
+    <div class="modal-contentl">
+      <span class="closel" onclick="closeEditModall()">&times;</span>
+      <div class="containerLabel">
+        <p>
+        <h6>Edit labels</h6>
+        <input id="new-task" type="text" placeholder="Create label">
+        <button id="add-btn" onclick=""><i class="material-icons">check</i></button>
+        </p>
+        <ul id="task-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <script>
 
     function showPage(pageId) {
@@ -244,10 +260,92 @@
       closeEditModal();
     }
 
+
+    // Label
+    let taskInput = document.getElementById("new-task");
+    let addButton = document.getElementById("add-btn");
+    let taskList = document.getElementById("task-list");
+
+    let createNewTaskElement = function (taskString) {
+      let listItem = document.createElement("li");
+      let deleteButton = document.createElement("button");
+      let label = document.createElement("label");
+      let editInput = document.createElement("input");
+      let editButton = document.createElement("button");
+
+      deleteButton.innerHTML = '<i class="material-icons">delete</i>';
+      editButton.innerHTML = '<i class="material-icons">edit</i>';
+
+      deleteButton.className = "delete";
+      editInput.type = "text";
+      editButton.className = "edit";
+
+      label.innerText = taskString;
+
+      listItem.appendChild(deleteButton);
+      listItem.appendChild(label);
+      listItem.appendChild(editInput);
+      listItem.appendChild(editButton);
+
+      return listItem;
+    }
+
+    let addTask = function () {
+      let listItem = createNewTaskElement(taskInput.value);
+      taskList.appendChild(listItem);
+      bindTaskEvents(listItem);
+      taskInput.value = "";
+    }
+
+    let editTask = function () {
+      let listItem = this.parentNode;
+      let editInput = listItem.querySelector("input[type=text]");
+      let label = listItem.querySelector("label");
+      let containsClass = listItem.classList.contains("editMode");
+
+      if (containsClass) {
+        label.innerText = editInput.value;
+      } else {
+        editInput.value = label.innerText;
+      }
+
+      listItem.classList.toggle("editMode");
+    }
+
+    let deleteTask = function () {
+      let listItem = this.parentNode;
+      taskList.removeChild(listItem);
+    }
+
+    let bindTaskEvents = function (taskListItem) {
+      let deleteButton = taskListItem.querySelector("button.delete");
+      let editButton = taskListItem.querySelector("button.edit");
+
+      deleteButton.onclick = deleteTask;
+      editButton.onclick = editTask;
+    }
+
+    addButton.addEventListener("click", addTask);
+
+
+    // Modal label
+    function openEditModall() {
+      document.getElementById('editLabel').style.display = 'block';
+    }
+
+    function closeEditModall() {
+      document.getElementById('editLabel').style.display = 'none';
+    }
+
+
+
+
+    
+
   </script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="index.js"></script>
+
 </body>
 
 
