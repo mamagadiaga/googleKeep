@@ -690,3 +690,36 @@ p>button:hover {
 #task-list li.editMode label {
   display: none;
 }
+
+
+/* Ajoutez le préfixe ".edit-label-modal-open" pour les styles spécifiques au modal */
+.edit-label-modal-open .sidebar-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.edit-label-modal-open .sidebar-item:hover {
+  background-color: white;
+  border-radius: 0;
+}
+
+.edit-label-modal-open .sidebar-item .material-icons-outlined {
+  font-size: 1.2rem;
+  margin-right: 5px;
+  margin-left: 0;
+}
+
+.edit-label-modal-open .sidebar-item .sidebar-text {
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+.edit-label-modal-open .sidebar-item .sidebar-text:focus {
+  font-size: 0.9rem;
+  margin-left: 5px;  
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.edit-label-modal-open .sidebar-item .edit-icon {
+  margin-left: auto;
+}
