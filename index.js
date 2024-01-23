@@ -54,7 +54,7 @@ listViewIcon.addEventListener('click', function () {
 });
 
 
-
+// Contenu
 function showCard() {
   document.getElementById("card-container").style.display = "block";
   document.getElementById("form-container").style.display = "none";
