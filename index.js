@@ -547,3 +547,65 @@ let bindTaskEvents = function (taskListItem) {
 
 addButton.addEventListener("click", addTask);
 
+// New label dans le sidebar
+function addNewLabel() {
+  let labelInput = document.getElementById("new-task");
+  let labelValue = labelInput.value.trim();
+
+  if (labelValue !== "") {
+    // Ajouter le label au modal "Edit Label"
+    let taskList = document.getElementById("task-list");
+    let newLabelItem = createNewLabelElement(labelValue);
+    taskList.appendChild(newLabelItem);
+    bindLabelEvents(newLabelItem);
+
+    // Ajouter le label dans le sidebar
+    addLabelToSidebar(labelValue);
+
+    // Réinitialiser le champ de libellé
+    labelInput.value = "";
+  }
+}
+
+function createNewLabelElement(labelString) {
+  let labelItem = document.createElement("div");
+  labelItem.classList.add("sidebar-item", "hover");
+
+  let labelIcon = document.createElement("span");
+  labelIcon.classList.add("material-icons-outlined", "hover");
+  labelIcon.textContent = "label";
+
+  // Créer l'élément span pour le texte du libellé
+  let labelTextSpan = document.createElement("span");
+  labelTextSpan.classList.add("sidebar-text");
+  labelTextSpan.textContent = labelString;
+
+  // Ajouter l'icône et le texte du libellé à l'élément du libellé
+  labelItem.appendChild(labelIcon);
+  labelItem.appendChild(labelTextSpan);
+
+  return labelItem;
+}
+
+function bindLabelEvents(labelListItem) {
+  // Evénements liés au label 
+}
+
+function addLabelToSidebar(labelString) {
+  let sidebar = document.querySelector('.sidebar');
+  let newLabelItem = createNewLabelElement(labelString);
+  let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
+  sidebar.insertBefore(newLabelItem, editLabelItem);
+  
+  newLabelItem.addEventListener('click', function () {
+    // Appeler la fonction pour afficher la page du label 
+    showLabelPage(labelString);
+  });
+}
+
+
+function showLabelPage(labelString) {
+  // Implémentez cette fonction pour afficher la page du label
+  // Peut-être que vous souhaitez masquer les autres sections et afficher les notes associées à ce label, par exemple
+  console.log("Afficher la page du label :", labelString);
+}
