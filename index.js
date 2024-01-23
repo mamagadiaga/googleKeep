@@ -8,10 +8,39 @@ menuIcon.addEventListener('click', () => {
   contenu.classList.toggle('closed');
 });
 
+function showPage(pageId) {
+  const sections = document.querySelectorAll('main section');
+  sections.forEach(section => {
+    section.style.display = 'none';
+  });
+
+  const currentPage = document.getElementById(pageId);
+  if (currentPage) {
+    currentPage.style.display = 'block';
+  }
+}
+
+function handleSidebarClick(pageId) {
+  showPage(pageId);
+
+
+  const sidebarItems = document.querySelectorAll('.sidebar-item');
+  sidebarItems.forEach(item => {
+    item.classList.remove('active');
+  });
+
+
+  const clickedItem = document.querySelector(`.sidebar-item[onclick="handleSidebarClick('${pageId}')"]`);
+  if (clickedItem) {
+    clickedItem.classList.add('active');
+  }
+}
+
+
 // Refresh
 const refreshIcon = document.getElementById('refreshIcon');
 
-refreshIcon.addEventListener('click', function() {
+refreshIcon.addEventListener('click', function () {
   location.reload();
 });
 
@@ -20,7 +49,7 @@ refreshIcon.addEventListener('click', function() {
 const listViewIcon = document.getElementById('listViewIcon');
 const notes = document.querySelector('.notes');
 
-listViewIcon.addEventListener('click', function() {
+listViewIcon.addEventListener('click', function () {
   notes.classList.toggle('list-view');
 });
 
@@ -46,6 +75,23 @@ document.addEventListener("click", function (event) {
     hideCard();
   }
 });
+
+
+//  Modal edit
+function openEditModal() {
+  document.getElementById("editModal").style.display = "block";
+}
+
+function closeEditModal() {
+  document.getElementById("editModal").style.display = "none";
+}
+
+function saveEdit() {
+  var editedTitle = document.getElementById("edit-title").value;
+  var editedContent = document.getElementById("edit-content").value;
+
+  closeEditModal();
+}
 
 
 
@@ -417,3 +463,87 @@ function addTrashedNote(id, color, title, content, imageURL) {
     updateTrash();
   });
 }
+
+
+
+
+
+
+
+
+
+// Modal label
+function openEditLabel() {
+  document.getElementById('editLabel').style.display = 'block';
+}
+
+function closeEditLabel() {
+  document.getElementById('editLabel').style.display = 'none';
+}
+
+// Label
+let taskInput = document.getElementById("new-task");
+let addButton = document.getElementById("add-btn");
+let taskList = document.getElementById("task-list");
+
+let createNewTaskElement = function (taskString) {
+  let listItem = document.createElement("li");
+  let deleteButton = document.createElement("button");
+  let label = document.createElement("label");
+  let editInput = document.createElement("input");
+  let editButton = document.createElement("button");
+
+  deleteButton.innerHTML = '<i class="material-icons">delete</i>';
+  editButton.innerHTML = '<i class="material-icons">edit</i>';
+
+  deleteButton.className = "delete";
+  editInput.type = "text";
+  editButton.className = "edit";
+
+  label.innerText = taskString;
+
+  listItem.appendChild(deleteButton);
+  listItem.appendChild(label);
+  listItem.appendChild(editInput);
+  listItem.appendChild(editButton);
+
+  return listItem;
+}
+
+let addTask = function () {
+  let listItem = createNewTaskElement(taskInput.value);
+  taskList.appendChild(listItem);
+  bindTaskEvents(listItem);
+  taskInput.value = "";
+}
+
+let editTask = function () {
+  let listItem = this.parentNode;
+  let editInput = listItem.querySelector("input[type=text]");
+  let label = listItem.querySelector("label");
+  let containsClass = listItem.classList.contains("editMode");
+
+  if (containsClass) {
+    label.innerText = editInput.value;
+  } else {
+    editInput.value = label.innerText;
+  }
+
+  listItem.classList.toggle("editMode");
+}
+
+let deleteTask = function () {
+  let listItem = this.parentNode;
+  taskList.removeChild(listItem);
+}
+
+let bindTaskEvents = function (taskListItem) {
+  let deleteButton = taskListItem.querySelector("button.delete");
+  let editButton = taskListItem.querySelector("button.edit");
+
+  deleteButton.onclick = deleteTask;
+  editButton.onclick = editTask;
+}
+
+addButton.addEventListener("click", addTask);
+

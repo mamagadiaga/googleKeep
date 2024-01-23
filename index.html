@@ -42,11 +42,11 @@
         <div class="tooltip" id="refreshIcon">
           <span class="material-icons-outlined hover">refresh</span>
           <span class="tooltip-text">Refresh</span>
-        </div>        
+        </div>
         <div class="tooltip" id="listViewIcon">
           <span class="material-icons-outlined hover">view_agenda</span>
           <span class="tooltip-text">List View</span>
-        </div>        
+        </div>
         <div class="tooltip">
           <span class="material-icons-outlined hover">settings</span>
           <span class="tooltip-text">Settings</span>
@@ -64,7 +64,7 @@
       </div>
     </nav>
 
-    <aside >
+    <aside>
       <div class="sidebar">
         <div class="sidebar-item active" onclick="handleSidebarClick('notePage')">
           <span class="material-icons-outlined hover">lightbulb</span>
@@ -75,7 +75,7 @@
           <span class="material-icons-outlined hover">notifications</span>
           <span class="sidebar-text">Reminders</span>
         </div>
-        <div class="sidebar-item" onclick="handleSidebarClick('editPage')">
+        <div class="sidebar-item" onclick="openEditLabel('editLabel')">
           <span class="material-icons-outlined hover">edit</span>
           <span class="sidebar-text">Edit Labels</span>
         </div>
@@ -171,80 +171,46 @@
 
     </section>
 
-  </main>
-
-  <script>
-
-    function showPage(pageId) {
-      const sections = document.querySelectorAll('main section');
-      sections.forEach(section => {
-        section.style.display = 'none';
-      });
-
-      const currentPage = document.getElementById(pageId);
-      if (currentPage) {
-        currentPage.style.display = 'block';
-      }
-    }
-
-    function handleSidebarClick(pageId) {
-      showPage(pageId);
-
-
-      const sidebarItems = document.querySelectorAll('.sidebar-item');
-      sidebarItems.forEach(item => {
-        item.classList.remove('active');
-      });
-
-
-      const clickedItem = document.querySelector(`.sidebar-item[onclick="handleSidebarClick('${pageId}')"]`);
-      if (clickedItem) {
-        clickedItem.classList.add('active');
-      }
-    }
-
-
-  </script>
-
-  <!-- Edit Modal -->
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeEditModal()">&times;</span>
-      <input type="text" name="edit-title" placeholder="Title" class="text-inputs" id="edit-title">
-      <input type="text" name="edit-text" placeholder="Take a note..." class="text-inputs" id="edit-content">
-      <div class="icons">
-        <a href="#"><i class="material-icons">touch_app</i></a>
-        <a href="#"><i class="material-icons">person_add</i></a>
-        <a href="#"><i class="material-icons">color_lens</i>
-          <input type="color" id="edit-colorPicker" style="display: none;" onchange="set_color(event)">
-        </a>
-        <a href="#"><i class="material-icons image" id="">image</i></a>
-        <a href="#"><i class="material-icons">archive</i></a>
-        <a href="#"><i class="material-icons">more_vert</i></a>
-        <a href="#" id="save_change" onclick="saveEdit()" class="btn-save">Save Change</a>
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <input type="text" name="edit-title" placeholder="Title" class="text-inputs" id="edit-title">
+        <input type="text" name="edit-text" placeholder="Take a note..." class="text-inputs" id="edit-content">
+        <div class="icons">
+          <a href="#"><i class="material-icons">touch_app</i></a>
+          <a href="#"><i class="material-icons">person_add</i></a>
+          <a href="#"><i class="material-icons">color_lens</i>
+            <input type="color" id="edit-colorPicker" style="display: none;" onchange="set_color(event)">
+          </a>
+          <a href="#"><i class="material-icons image" id="">image</i></a>
+          <a href="#"><i class="material-icons">archive</i></a>
+          <a href="#"><i class="material-icons">more_vert</i></a>
+          <a href="#" id="save_change" onclick="saveEdit()" class="btn-save">Save Change</a>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Edit labels -->
+    <div class="modall" id="editLabel">
+      <div class="modal-contentl">
+        <span class="closel" onclick="closeEditLabel()">&times;</span>
+        <div class="containerLabel">
+          <p>
+          <h6>Edit labels</h6>
+          <input id="new-task" type="text" placeholder="Create label">
+          <button id="add-btn" onclick=""><i class="material-icons">check</i></button>
+          </p>
+          <ul id="task-list">
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </main>
 
 
-  <!-- Modal -->
-  <script>
-    function openEditModal() {
-      document.getElementById("editModal").style.display = "block";
-    }
 
-    function closeEditModal() {
-      document.getElementById("editModal").style.display = "none";
-    }
-
-    function saveEdit() {
-      var editedTitle = document.getElementById("edit-title").value;
-      var editedContent = document.getElementById("edit-content").value;
-
-      closeEditModal();
-    }
-
-  </script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="index.js"></script>
