@@ -474,12 +474,17 @@ function addTrashedNote(id, color, title, content, imageURL) {
 
 // Modal label
 function openEditLabel() {
-  document.getElementById('editLabel').style.display = 'block';
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'block';
+  editLabelModal.classList.add('edit-label-modal-open');
 }
 
 function closeEditLabel() {
-  document.getElementById('editLabel').style.display = 'none';
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'none';
+  editLabelModal.classList.remove('edit-label-modal-open');
 }
+
 
 // Label
 let taskInput = document.getElementById("new-task");
@@ -510,12 +515,6 @@ let createNewTaskElement = function (taskString) {
   return listItem;
 }
 
-let addTask = function () {
-  let listItem = createNewTaskElement(taskInput.value);
-  taskList.appendChild(listItem);
-  bindTaskEvents(listItem);
-  taskInput.value = "";
-}
 
 let editTask = function () {
   let listItem = this.parentNode;
@@ -604,8 +603,19 @@ function addLabelToSidebar(labelString) {
 }
 
 
+
 function showLabelPage(labelString) {
-  // Implémentez cette fonction pour afficher la page du label
-  // Peut-être que vous souhaitez masquer les autres sections et afficher les notes associées à ce label, par exemple
+  hideAllSections();
+
+  let labelPage = document.getElementById('labelPage');
+  labelPage.style.display = 'block';
+
   console.log("Afficher la page du label :", labelString);
 }
+function hideAllSections() {
+  let sections = document.querySelectorAll('main section');
+  sections.forEach(section => {
+    section.style.display = 'none';
+  });
+}
+
