@@ -551,16 +551,13 @@ function addNewLabel() {
   let labelValue = labelInput.value.trim();
 
   if (labelValue !== "") {
-    // Ajouter le label au modal "Edit Label"
     let taskList = document.getElementById("task-list");
     let newLabelItem = createNewLabelElement(labelValue);
     taskList.appendChild(newLabelItem);
     bindLabelEvents(newLabelItem);
 
-    // Ajouter le label dans le sidebar
     addLabelToSidebar(labelValue);
 
-    // Réinitialiser le champ de libellé
     labelInput.value = "";
   }
 }
@@ -573,12 +570,10 @@ function createNewLabelElement(labelString) {
   labelIcon.classList.add("material-icons-outlined", "hover");
   labelIcon.textContent = "label";
 
-  // Créer l'élément span pour le texte du libellé
   let labelTextSpan = document.createElement("span");
   labelTextSpan.classList.add("sidebar-text");
   labelTextSpan.textContent = labelString;
 
-  // Ajouter l'icône et le texte du libellé à l'élément du libellé
   labelItem.appendChild(labelIcon);
   labelItem.appendChild(labelTextSpan);
 
@@ -596,21 +591,17 @@ function addLabelToSidebar(labelString) {
   sidebar.insertBefore(newLabelItem, editLabelItem);
   
   newLabelItem.addEventListener('click', function () {
-    // Appeler la fonction pour afficher la page du label 
     showLabelPage(labelString);
   });
 }
 
 
 function showLabelPage(labelString) {
-  // Masquer toutes les sections
   hideAllSections();
 
-  // Afficher la section de la page du label
   let labelPage = document.getElementById('labelPage');
   labelPage.style.display = 'block';
 
-  // Implémentez le contenu spécifique de la page du label ici
   console.log("Afficher la page du label :", labelString);
 }
 function hideAllSections() {
