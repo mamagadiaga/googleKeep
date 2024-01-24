@@ -741,12 +741,9 @@ p>button:hover {
 
 
 
-/* Add this to your CSS */
-.delete-icon {
-  display: none;
-  cursor: pointer;
-}
-
-.editMode .delete-icon {
-  display: inline-block;
+/* Page label */
+.label{
+  padding-top: 50px;
+  font-size: 100px;
+  color: #ddd;
 }

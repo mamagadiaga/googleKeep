@@ -526,18 +526,13 @@ let editTask = function () {
   let containsClass = listItem.classList.contains("editMode");
 
   if (containsClass) {
-    // Save the original label text before editing
     let originalLabelText = label.innerText;
 
-    // Update the label in the task list
     label.innerText = editInput.value;
 
-    // Update the label in the sidebar
     updateLabelInSidebar(originalLabelText, label.innerText);
 
-    // Update the label on the label page (if needed)
-    // updateLabelOnLabelPage(originalLabelText, label.innerText);
-
+ 
     editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
     editInput.value = label.innerText;
@@ -563,16 +558,12 @@ let deleteTask = function () {
   let listItem = this.parentNode;
   let label = listItem.querySelector("label");
 
-  // Save the label text before deleting
   let deletedLabelText = label.innerText;
 
   taskList.removeChild(listItem);
 
-  // Remove the label from the sidebar
   removeLabelFromSidebar(deletedLabelText);
 
-  // Remove the label from the label page (if needed)
-  // removeLabelFromLabelPage(deletedLabelText);
 }
 
 function removeLabelFromSidebar(deletedLabelText) {
@@ -580,7 +571,7 @@ function removeLabelFromSidebar(deletedLabelText) {
 
   sidebarLabels.forEach(function (sidebarLabel) {
     if (sidebarLabel.textContent === deletedLabelText) {
-      sidebarLabel.parentNode.remove(); // Remove the entire sidebar item
+      sidebarLabel.parentNode.remove(); 
     }
   });
 }
@@ -598,13 +589,11 @@ let bindTaskEvents = function (taskListItem) {
 let addTask = function () {
   let taskValue = taskInput.value.trim();
 
-  // Vérifier si le champ de saisie n'est pas vide
   if (taskValue !== "") {
     let listItem = createNewTaskElement(taskValue);
     taskList.appendChild(listItem);
     bindTaskEvents(listItem);
 
-    // Ajout du label au sidebar
     addLabelToSidebar(taskValue);
 
     taskInput.value = "";
@@ -647,14 +636,25 @@ function addLabelToSidebar(labelString) {
   let sidebar = document.querySelector('.sidebar');
   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
   
-  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
-    let newLabelItem = createNewLabelElement(labelString);
-    sidebar.insertBefore(newLabelItem, editLabelItem);
+  let newLabelItem = createNewLabelElement(labelString);
+  sidebar.insertBefore(newLabelItem, editLabelItem);
 
-    newLabelItem.addEventListener('click', function () {
-      showLabelPage(labelString);
-    });
+  newLabelItem.addEventListener('click', function () {
+    showLabelPage(labelString);
+  });
+
+  if (isActiveLabel(labelString)) {
+    newLabelItem.classList.add('active');
+  } else {
+    newLabelItem.classList.remove('active');
+  }
 }
+
+function isActiveLabel(labelString) {
+
+  return false; 
+}
+
 
 
 
@@ -673,3 +673,22 @@ function hideAllSections() {
   });
 }
 
+// Page Label
+function showLabelPage(labelString) {
+  hideAllSections();
+
+  let labelPage = document.getElementById('labelPage');
+  labelPage.style.display = 'block';
+
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+  sidebarLabels.forEach(function (sidebarLabel) {
+    let sidebarItem = sidebarLabel.parentNode;
+    if (sidebarLabel.textContent === labelString) {
+      sidebarItem.classList.add('active');
+    } else {
+      sidebarItem.classList.remove('active');
+    }
+  });
+
+  console.log("Afficher la page du label :", labelString);
+}
