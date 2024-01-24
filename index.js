@@ -34,6 +34,7 @@ function handleSidebarClick(pageId) {
   if (clickedItem) {
     clickedItem.classList.add('active');
   }
+
 }
 
 
