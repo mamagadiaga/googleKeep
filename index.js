@@ -519,17 +519,38 @@ let createNewTaskElement = function (taskString) {
 let editTask = function () {
   let listItem = this.parentNode;
   let editInput = listItem.querySelector("input[type=text]");
+  let editButton = listItem.querySelector("button.edit");
   let label = listItem.querySelector("label");
   let containsClass = listItem.classList.contains("editMode");
 
   if (containsClass) {
     label.innerText = editInput.value;
+
+    // Mise à jour du texte du label dans le sidebar
+    updateLabelInSidebar(label.innerText);
+
+    // Mettre à jour l'icône dans la tâche
+    editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
     editInput.value = label.innerText;
+
+    // Mettre à jour l'icône dans la tâche
+    editButton.innerHTML = '<i class="material-icons">check</i>';
   }
 
   listItem.classList.toggle("editMode");
 }
+
+function updateLabelInSidebar(updatedLabelText) {
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+
+  sidebarLabels.forEach(function (sidebarLabel) {
+    if (sidebarLabel.textContent === updatedLabelText) {
+      sidebarLabel.textContent = updatedLabelText;
+    }
+  });
+}
+
 
 let deleteTask = function () {
   let listItem = this.parentNode;
@@ -544,24 +565,24 @@ let bindTaskEvents = function (taskListItem) {
   editButton.onclick = editTask;
 }
 
+
+let addTask = function () {
+  let listItem = createNewTaskElement(taskInput.value);
+  taskList.appendChild(listItem);
+  bindTaskEvents(listItem);
+
+  // Ajout du label au sidebar
+  let labelValue = taskInput.value.trim();
+  addLabelToSidebar(labelValue);
+
+  taskInput.value = "";
+}
+
 addButton.addEventListener("click", addTask);
 
-// New label dans le sidebar
-function addNewLabel() {
-  let labelInput = document.getElementById("new-task");
-  let labelValue = labelInput.value.trim();
 
-  if (labelValue !== "") {
-    let taskList = document.getElementById("task-list");
-    let newLabelItem = createNewLabelElement(labelValue);
-    taskList.appendChild(newLabelItem);
-    bindLabelEvents(newLabelItem);
 
-    addLabelToSidebar(labelValue);
 
-    labelInput.value = "";
-  }
-}
 
 function createNewLabelElement(labelString) {
   let labelItem = document.createElement("div");
@@ -582,8 +603,12 @@ function createNewLabelElement(labelString) {
 }
 
 function bindLabelEvents(labelListItem) {
-  // Evénements liés au label 
+  labelListItem.addEventListener('click', function () {
+    openEditLabel();
+    // Ici, vous pouvez ajouter le code pour charger le label dans le modal d'édition
+  });
 }
+
 
 function addLabelToSidebar(labelString) {
   let sidebar = document.querySelector('.sidebar');
