@@ -88,8 +88,8 @@ function closeEditModal() {
 }
 
 function saveEdit() {
-  let editedTitle = document.getElementById("edit-title").value;
-  let editedContent = document.getElementById("edit-content").value;
+  var editedTitle = document.getElementById("edit-title").value;
+  var editedContent = document.getElementById("edit-content").value;
 
   closeEditModal();
 }
@@ -343,12 +343,12 @@ function addNewNote(id, color, title, content, imageURL) {
 }
 
 function saveEdit() {
-  let editedTitle = $("#edit-title").val();
-  let editedContent = $("#edit-content").val();
+  var editedTitle = $("#edit-title").val();
+  var editedContent = $("#edit-content").val();
 
-  let id = $("#editModal").data("note-id");
+  var id = $("#editModal").data("note-id");
 
-  let noteIndex = notesArray.findIndex(note => note.Index === id);
+  var noteIndex = notesArray.findIndex(note => note.Index === id);
   if (noteIndex !== -1) {
     notesArray[noteIndex].Title = editedTitle;
     notesArray[noteIndex].Content = editedContent;
@@ -671,16 +671,13 @@ function showLabelPage(labelString) {
 
   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
   sidebarLabels.forEach(function (sidebarLabel) {
-    sidebarLabel.parentNode.classList.remove('active');
+    let sidebarItem = sidebarLabel.parentNode;
+    if (sidebarLabel.textContent === labelString) {
+      sidebarItem.classList.add('active');
+    } else {
+      sidebarItem.classList.remove('active');
+    }
   });
-
-  let activeLabel = Array.from(sidebarLabels).find(function (sidebarLabel) {
-    return sidebarLabel.textContent === labelString;
-  });
-
-  if (activeLabel) {
-    activeLabel.closest('.sidebar-item').classList.add('active');
-  }
 
   console.log("Afficher la page du label :", labelString);
 }
