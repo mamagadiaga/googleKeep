@@ -576,10 +576,12 @@ textarea {
 #task-list {
   margin: 0;
   padding: 0;
+  width: 358px;
 }
 
 #task-list li * {
   float: left;
+  padding-left: 5px;
 }
 
 #task-list li,
@@ -621,9 +623,12 @@ label[for='new-task'] {
   margin: 0;
   font-size: 13px;
   border: none;
-  border-bottom: 1px solid #ddd;
   background: #fff;
   color: #888;
+}
+#new-task:focus  {
+  border: none;
+  border-bottom: 1px solid #ddd;
 }
 
 input[type="text"]:focus {
@@ -653,7 +658,7 @@ p>button:hover {
 
 #task-list li {
   overflow: hidden;
-  width: 318px;
+  width: 358px;
 }
 
 #task-list li>input[type="checkbox"] {
@@ -662,13 +667,25 @@ p>button:hover {
 
 #task-list li>label {
   font-size: 15px;
-  width: 258px;
+  width: 285px;
   padding-top: 10px;
-  border-bottom: 1px solid #eee;
+  float: left;
+
+}
+#task-list li>label {
+  font-size: 15px;
+  width: 285px;
+  padding-top: 10px;
+  float: left;
+
 }
 
 #task-list li>input[type="text"] {
   width: 258px;
+}
+#task-list li>input[type="text"]:focus {
+  
+  border-bottom: 1px solid #eee;
 }
 
 #task-list li>.delete:hover {
