@@ -524,9 +524,17 @@ let editTask = function () {
   let containsClass = listItem.classList.contains("editMode");
 
   if (containsClass) {
+    // Save the original label text before editing
+    let originalLabelText = label.innerText;
+
+    // Update the label in the task list
     label.innerText = editInput.value;
 
-    updateLabelInSidebar(label.innerText);
+    // Update the label in the sidebar
+    updateLabelInSidebar(originalLabelText, label.innerText);
+
+    // Update the label on the label page (if needed)
+    // updateLabelOnLabelPage(originalLabelText, label.innerText);
 
     editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
@@ -538,11 +546,11 @@ let editTask = function () {
   listItem.classList.toggle("editMode");
 }
 
-function updateLabelInSidebar(updatedLabelText) {
+function updateLabelInSidebar(originalLabelText, updatedLabelText) {
   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
 
   sidebarLabels.forEach(function (sidebarLabel) {
-    if (sidebarLabel.textContent === updatedLabelText) {
+    if (sidebarLabel.textContent === originalLabelText) {
       sidebarLabel.textContent = updatedLabelText;
     }
   });
@@ -554,6 +562,7 @@ let deleteTask = function () {
   taskList.removeChild(listItem);
 }
 
+
 let bindTaskEvents = function (taskListItem) {
   let deleteButton = taskListItem.querySelector("button.delete");
   let editButton = taskListItem.querySelector("button.edit");
@@ -564,15 +573,19 @@ let bindTaskEvents = function (taskListItem) {
 
 
 let addTask = function () {
-  let listItem = createNewTaskElement(taskInput.value);
-  taskList.appendChild(listItem);
-  bindTaskEvents(listItem);
+  let taskValue = taskInput.value.trim();
 
-  // Ajout du label au sidebar
-  let labelValue = taskInput.value.trim();
-  addLabelToSidebar(labelValue);
+  // Vérifier si le champ de saisie n'est pas vide
+  if (taskValue !== "") {
+    let listItem = createNewTaskElement(taskValue);
+    taskList.appendChild(listItem);
+    bindTaskEvents(listItem);
 
-  taskInput.value = "";
+    // Ajout du label au sidebar
+    addLabelToSidebar(taskValue);
+
+    taskInput.value = "";
+  }
 }
 
 addButton.addEventListener("click", addTask);
@@ -602,20 +615,22 @@ function createNewLabelElement(labelString) {
 function bindLabelEvents(labelListItem) {
   labelListItem.addEventListener('click', function () {
     openEditLabel();
-    // Ici, vous pouvez ajouter le code pour charger le label dans le modal d'édition
   });
 }
 
 
+
 function addLabelToSidebar(labelString) {
   let sidebar = document.querySelector('.sidebar');
-  let newLabelItem = createNewLabelElement(labelString);
   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
-  sidebar.insertBefore(newLabelItem, editLabelItem);
   
-  newLabelItem.addEventListener('click', function () {
-    showLabelPage(labelString);
-  });
+  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
+    let newLabelItem = createNewLabelElement(labelString);
+    sidebar.insertBefore(newLabelItem, editLabelItem);
+
+    newLabelItem.addEventListener('click', function () {
+      showLabelPage(labelString);
+    });
 }
 
 
