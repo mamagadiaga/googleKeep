@@ -513,6 +513,8 @@ let createNewTaskElement = function (taskString) {
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
 
+  
+
   return listItem;
 }
 
@@ -559,7 +561,28 @@ function updateLabelInSidebar(originalLabelText, updatedLabelText) {
 
 let deleteTask = function () {
   let listItem = this.parentNode;
+  let label = listItem.querySelector("label");
+
+  // Save the label text before deleting
+  let deletedLabelText = label.innerText;
+
   taskList.removeChild(listItem);
+
+  // Remove the label from the sidebar
+  removeLabelFromSidebar(deletedLabelText);
+
+  // Remove the label from the label page (if needed)
+  // removeLabelFromLabelPage(deletedLabelText);
+}
+
+function removeLabelFromSidebar(deletedLabelText) {
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+
+  sidebarLabels.forEach(function (sidebarLabel) {
+    if (sidebarLabel.textContent === deletedLabelText) {
+      sidebarLabel.parentNode.remove(); // Remove the entire sidebar item
+    }
+  });
 }
 
 

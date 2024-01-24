@@ -741,3 +741,12 @@ p>button:hover {
 
 
 
+/* Add this to your CSS */
+.delete-icon {
+  display: none;
+  cursor: pointer;
+}
+
+.editMode .delete-icon {
+  display: inline-block;
+}
