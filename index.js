@@ -88,8 +88,8 @@ function closeEditModal() {
 }
 
 function saveEdit() {
-  var editedTitle = document.getElementById("edit-title").value;
-  var editedContent = document.getElementById("edit-content").value;
+  let editedTitle = document.getElementById("edit-title").value;
+  let editedContent = document.getElementById("edit-content").value;
 
   closeEditModal();
 }
@@ -343,12 +343,12 @@ function addNewNote(id, color, title, content, imageURL) {
 }
 
 function saveEdit() {
-  var editedTitle = $("#edit-title").val();
-  var editedContent = $("#edit-content").val();
+  let editedTitle = $("#edit-title").val();
+  let editedContent = $("#edit-content").val();
 
-  var id = $("#editModal").data("note-id");
+  let id = $("#editModal").data("note-id");
 
-  var noteIndex = notesArray.findIndex(note => note.Index === id);
+  let noteIndex = notesArray.findIndex(note => note.Index === id);
   if (noteIndex !== -1) {
     notesArray[noteIndex].Title = editedTitle;
     notesArray[noteIndex].Content = editedContent;
