@@ -415,7 +415,7 @@ input:focus {
   margin: auto;
 }
 .modal-contentl {
-  max-width: 500px;
+  max-width: 450px;
   background-color: #fefefe;
   margin: 15% auto;
   padding: 5px;
