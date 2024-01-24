@@ -526,15 +526,12 @@ let editTask = function () {
   if (containsClass) {
     label.innerText = editInput.value;
 
-    // Mise à jour du texte du label dans le sidebar
     updateLabelInSidebar(label.innerText);
 
-    // Mettre à jour l'icône dans la tâche
     editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
     editInput.value = label.innerText;
 
-    // Mettre à jour l'icône dans la tâche
     editButton.innerHTML = '<i class="material-icons">check</i>';
   }
 
