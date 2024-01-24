@@ -669,7 +669,7 @@ function showLabelPage(labelString) {
   let labelPage = document.getElementById('labelPage');
   labelPage.style.display = 'block';
 
-=  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
   sidebarLabels.forEach(function (sidebarLabel) {
     sidebarLabel.parentNode.classList.remove('active');
   });
