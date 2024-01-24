@@ -636,25 +636,14 @@ function addLabelToSidebar(labelString) {
   let sidebar = document.querySelector('.sidebar');
   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
   
-  let newLabelItem = createNewLabelElement(labelString);
-  sidebar.insertBefore(newLabelItem, editLabelItem);
+  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
+    let newLabelItem = createNewLabelElement(labelString);
+    sidebar.insertBefore(newLabelItem, editLabelItem);
 
-  newLabelItem.addEventListener('click', function () {
-    showLabelPage(labelString);
-  });
-
-  if (isActiveLabel(labelString)) {
-    newLabelItem.classList.add('active');
-  } else {
-    newLabelItem.classList.remove('active');
-  }
+    newLabelItem.addEventListener('click', function () {
+      showLabelPage(labelString);
+    });
 }
-
-function isActiveLabel(labelString) {
-
-  return false; 
-}
-
 
 
 
@@ -680,6 +669,7 @@ function showLabelPage(labelString) {
   let labelPage = document.getElementById('labelPage');
   labelPage.style.display = 'block';
 
+  // Ajoutez ou supprime la classe 'active' en fonction de l'étiquette réellement active
   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
   sidebarLabels.forEach(function (sidebarLabel) {
     let sidebarItem = sidebarLabel.parentNode;
