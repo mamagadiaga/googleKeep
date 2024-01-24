@@ -669,16 +669,18 @@ function showLabelPage(labelString) {
   let labelPage = document.getElementById('labelPage');
   labelPage.style.display = 'block';
 
-  // Ajoutez ou supprime la classe 'active' en fonction de l'étiquette réellement active
-  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+=  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
   sidebarLabels.forEach(function (sidebarLabel) {
-    let sidebarItem = sidebarLabel.parentNode;
-    if (sidebarLabel.textContent === labelString) {
-      sidebarItem.classList.add('active');
-    } else {
-      sidebarItem.classList.remove('active');
-    }
+    sidebarLabel.parentNode.classList.remove('active');
   });
+
+  let activeLabel = Array.from(sidebarLabels).find(function (sidebarLabel) {
+    return sidebarLabel.textContent === labelString;
+  });
+
+  if (activeLabel) {
+    activeLabel.closest('.sidebar-item').classList.add('active');
+  }
 
   console.log("Afficher la page du label :", labelString);
 }
