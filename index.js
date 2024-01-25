@@ -683,6 +683,16 @@ function showLabelPage(labelString) {
 }
 
 // Sous-menue 
+document.addEventListener("click", function (event) {
+  let subMenuContainer = document.querySelector('.submenu-container');
+  let subMenu = document.getElementById('addNoteSubMenu');
+
+  if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target)) {
+    // Clique en dehors du sous-menu, fermez-le
+    subMenu.style.display = 'none';
+  }
+});
+
 function toggleSubMenu() {
   let subMenu = document.getElementById('addNoteSubMenu');
   subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
