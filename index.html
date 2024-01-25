@@ -123,10 +123,10 @@
             <a href="#"><i class="material-icons image" id="image">image</i></a>
             <a href="#"><i class="material-icons">archive</i></a>
               <a href="#" onclick="toggleSubMenu()">
-                <i class="material-icons none">more_vert</i>
+                <i class="material-icons none" id="label">more_vert</i>
               </a>
               <ul type="none" class="submenu" id="addNoteSubMenu">
-                <li><a href="#" onclick="openEditLabel('editLabel')">Add Label</a></li>
+                <li><a href="#" id="addLabelLink" onclick="openEditLabel()">Add Label</a></li>
                 <li><a href="#">Add draw</a></li>
                 <li><a href="#">Show check cases</a></li>
               </ul>
@@ -145,7 +145,7 @@
 
     <section id="labelPage" style="display: none;">
 
-      <div class="note-container">
+      <div class="note-container labelsContainer">
         <i class="material-icons-outlined label">label</i>
         <h5>Aucune note associée à ce libellé pour le moment</h5>
       </div>

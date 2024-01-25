@@ -152,7 +152,7 @@ $("#save_note").click(function () {
 
     notesArray.push({
       Index: index,
-      Color: bgColor,  // Utilisez la couleur sélectionnée
+      Color: bgColor,  
       Title: title,
       Content: content,
       BackgroundColor: bgColor,
@@ -166,7 +166,7 @@ $("#save_note").click(function () {
     // Vider les champs
     $("#input-title").val("");
     $("#input-feild").val("");
-    $("#colorPicker").val("#ffffff");  // Réinitialisez le sélecteur de couleur
+    $("#colorPicker").val("#ffffff");
     imageURL = "";
   }
 });
@@ -687,8 +687,7 @@ document.addEventListener("click", function (event) {
   let subMenuContainer = document.querySelector('.submenu-container');
   let subMenu = document.getElementById('addNoteSubMenu');
 
-  if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target)) {
-    // Clique en dehors du sous-menu, fermez-le
+  if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target) && event.target.id !== 'addLabelLink') {
     subMenu.style.display = 'none';
   }
 });
@@ -696,4 +695,12 @@ document.addEventListener("click", function (event) {
 function toggleSubMenu() {
   let subMenu = document.getElementById('addNoteSubMenu');
   subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
+}
+
+function openEditLabel() {
+  let subMenu = document.getElementById('addNoteSubMenu');
+  subMenu.style.display = 'none';
+
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'block';
 }
