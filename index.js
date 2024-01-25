@@ -681,3 +681,9 @@ function showLabelPage(labelString) {
 
   console.log("Afficher la page du label :", labelString);
 }
+
+// Sous-menue 
+function toggleSubMenu() {
+  let subMenu = document.getElementById('addNoteSubMenu');
+  subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
+}
