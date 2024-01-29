@@ -612,20 +612,19 @@ let addTask = function () {
 
     addLabelToSidebar(taskValue);
 
-    // Get the currently active note (assuming one note is active)
     let activeNoteId = $(".notes-content.active").attr("id");
 
     if (activeNoteId) {
-      // Check if the label is not already in the active note's labels
       let activeNoteLabels = notesArray.find(note => note.Index === activeNoteId).Labels;
       if (!activeNoteLabels.includes(taskValue)) {
-        // Update the labels in the active note
         let labelsContainer = $(`#labels-${activeNoteId}`);
         labelsContainer.append(`<span class="label">${taskValue}</span>`);
 
         activeNoteLabels.push(taskValue);
       }
     }
+
+    $("#save_note").click();
 
     taskInput.value = "";
   }
