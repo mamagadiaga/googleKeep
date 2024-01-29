@@ -770,5 +770,18 @@ p>button:hover {
 .submenu a:hover {
   background-color: #ddd;
 }
+.labels-container {
+  width: 30%; 
+  margin: 10px;
+  background-color: #F1F3F4;
+  border-radius: 15px;
+  overflow: hidden; 
+}
 
-
+.labels-container .label {
+  width: 50px;
+  color: black;
+  font-size: 15px;
+  padding: 5px;
+  display: inline-block;
+}
