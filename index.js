@@ -136,7 +136,7 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 
 
 
-
+// Contenu
 let notesArray = [];
 let archiveArray = [];
 let trashArray = [];
@@ -150,18 +150,25 @@ $("#save_note").click(function () {
   if (title !== "" || content !== "") {
     notesArray = JSON.parse(localStorage.getItem("notes") || "[]");
 
+    // Extract labels from the task list
+    let labels = [];
+    $("#task-list li label").each(function () {
+      labels.push($(this).text());
+    });
+
     notesArray.push({
       Index: index,
-      Color: bgColor,  
+      Color: bgColor,
       Title: title,
       Content: content,
       BackgroundColor: bgColor,
       ImageURL: imageURL,
+      Labels: labels, // Add labels to the note
     });
 
     let jsonStr = JSON.stringify(notesArray);
     localStorage.setItem("notes", jsonStr);
-    addNewNote(index, bgColor, title, content, imageURL);
+    addNewNote(index, bgColor, title, content, imageURL, labels);
 
     // Vider les champs
     $("#input-title").val("");
@@ -170,6 +177,7 @@ $("#save_note").click(function () {
     imageURL = "";
   }
 });
+
 
 
 
@@ -282,23 +290,31 @@ function updateLocalStorageAndUI() {
   updateTrash();
 }
 
-function addNewNote(id, color, title, content, imageURL) {
+function addNewNote(id, color, title, content, imageURL, labels) {
   let notes = $(".notes");
   let noteTemplate = `
-  <div class="notes-content" id="${id}" style="background-color:${color}">
-  <div class="card-container">
-    ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
-    <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
-    <p style="padding-left: 20px;">${content}</p>
-  </div>
-  <div class="note-actions">
-    <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-    <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
-    <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
-  </div>
-</div>
+    <div class="notes-content" id="${id}" style="background-color:${color}">
+      <div class="card-container">
+        ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+        <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+        <p style="padding-left: 20px;">${content}</p>
+        <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
+      </div>
+      <div class="note-actions">
+        <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+        <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+        <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+      </div>
+    </div>
   `;
+
   notes.append(noteTemplate);
+
+  // Append labels
+  let labelsContainer = $(`#labels-${id}`);
+  labels.forEach(label => {
+    labelsContainer.append(`<span class="label">${label}</span>`);
+  });
 
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
@@ -596,9 +612,26 @@ let addTask = function () {
 
     addLabelToSidebar(taskValue);
 
+    // Get the currently active note (assuming one note is active)
+    let activeNoteId = $(".notes-content.active").attr("id");
+
+    if (activeNoteId) {
+      // Check if the label is not already in the active note's labels
+      let activeNoteLabels = notesArray.find(note => note.Index === activeNoteId).Labels;
+      if (!activeNoteLabels.includes(taskValue)) {
+        // Update the labels in the active note
+        let labelsContainer = $(`#labels-${activeNoteId}`);
+        labelsContainer.append(`<span class="label">${taskValue}</span>`);
+
+        activeNoteLabels.push(taskValue);
+      }
+    }
+
     taskInput.value = "";
   }
 }
+
+
 
 addButton.addEventListener("click", addTask);
 

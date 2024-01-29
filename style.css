@@ -749,7 +749,7 @@ p>button:hover {
 
 
 /* SOUS MENU */
-.submenu {
+.submenu { 
   left: 50%;
   display: none;
   position: absolute;
