@@ -310,11 +310,12 @@ function addNewNote(id, color, title, content, imageURL, labels) {
 
   notes.append(noteTemplate);
 
-  // Append labels
   let labelsContainer = $(`#labels-${id}`);
   labels.forEach(label => {
-    labelsContainer.append(`<span class="label">${label}</span>`);
+    labelsContainer.append(`<span class="label clickable">${label}</span>`);
   });
+  
+  
 
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
@@ -736,3 +737,8 @@ function openEditLabel() {
   let editLabelModal = document.getElementById('editLabel');
   editLabelModal.style.display = 'block';
 }
+
+$(document).on("click", ".label.clickable", function () {
+  let labelString = $(this).text().trim();
+  showLabelPage(labelString);
+});
