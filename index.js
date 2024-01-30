@@ -150,7 +150,6 @@ $("#save_note").click(function () {
   if (title !== "" || content !== "") {
     notesArray = JSON.parse(localStorage.getItem("notes") || "[]");
 
-    // Extract labels from the task list
     let labels = [];
     $("#task-list li label").each(function () {
       labels.push($(this).text());
@@ -163,7 +162,7 @@ $("#save_note").click(function () {
       Content: content,
       BackgroundColor: bgColor,
       ImageURL: imageURL,
-      Labels: labels, // Add labels to the note
+      Labels: labels, 
     });
 
     let jsonStr = JSON.stringify(notesArray);
@@ -506,7 +505,6 @@ function closeEditLabel() {
 
 // Label
 let taskInput = document.getElementById("new-task");
-
 let addButton = document.getElementById("add-btn");
 let taskList = document.getElementById("task-list");
 
@@ -531,9 +529,6 @@ let createNewTaskElement = function (taskString) {
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
 
-
-  
-
   return listItem;
 }
 
@@ -551,7 +546,6 @@ let editTask = function () {
 
     updateLabelInSidebar(originalLabelText, label.innerText);
 
- 
     editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
     editInput.value = label.innerText;
@@ -625,7 +619,6 @@ let addTask = function () {
       }
     }
 
-    // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
     $("#save_note").click();
 
     taskInput.value = "";
