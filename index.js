@@ -182,10 +182,10 @@ $("#save_note").click(function () {
 
 
 $(document).ready(function () {
-  let storedNotes = localStorage.getItem("notes");
-  if (storedNotes) {
-    notesArray = JSON.parse(storedNotes);
-  }
+  // let storedNotes = localStorage.getItem("notes");
+  // if (storedNotes) {
+  //   notesArray = JSON.parse(storedNotes);
+  // }
 
   let storedArchive = localStorage.getItem("archive");
   if (storedArchive) {
@@ -506,6 +506,7 @@ function closeEditLabel() {
 
 // Label
 let taskInput = document.getElementById("new-task");
+
 let addButton = document.getElementById("add-btn");
 let taskList = document.getElementById("task-list");
 
@@ -515,7 +516,7 @@ let createNewTaskElement = function (taskString) {
   let label = document.createElement("label");
   let editInput = document.createElement("input");
   let editButton = document.createElement("button");
-
+  
   deleteButton.innerHTML = '<i class="material-icons">delete</i>';
   editButton.innerHTML = '<i class="material-icons">edit</i>';
 
@@ -529,6 +530,7 @@ let createNewTaskElement = function (taskString) {
   listItem.appendChild(label);
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
+
 
   
 
@@ -594,13 +596,6 @@ function removeLabelFromSidebar(deletedLabelText) {
 }
 
 
-let bindTaskEvents = function (taskListItem) {
-  let deleteButton = taskListItem.querySelector("button.delete");
-  let editButton = taskListItem.querySelector("button.edit");
-
-  deleteButton.onclick = deleteTask;
-  editButton.onclick = editTask;
-}
 
 
 let addTask = function () {
@@ -616,27 +611,39 @@ let addTask = function () {
     let activeNoteId = $(".notes-content.active").attr("id");
 
     if (activeNoteId) {
-      let activeNoteLabels = notesArray.find(note => note.Index === activeNoteId).Labels;
-      if (!activeNoteLabels.includes(taskValue)) {
-        let labelsContainer = $(`#labels-${activeNoteId}`);
-        labelsContainer.append(`<span class="label">${taskValue}</span>`);
-
-        activeNoteLabels.push(taskValue);
+      let activeNote = notesArray.find(note => note.Index === activeNoteId);
+      
+      if (activeNote) {
+        let activeNoteLabels = activeNote.Labels;
+        
+        if (!activeNoteLabels.includes(taskValue)) {
+          let labelsContainer = $(`#labels-${activeNoteId}`);
+          labelsContainer.append(`<span class="label">${taskValue}</span>`);
+  
+          activeNoteLabels.push(taskValue);
+        }
       }
     }
 
+    // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
     $("#save_note").click();
 
     taskInput.value = "";
   }
 }
 
-
-
 addButton.addEventListener("click", addTask);
 
 
 
+
+let bindTaskEvents = function (taskListItem) {
+  let deleteButton = taskListItem.querySelector("button.delete");
+  let editButton = taskListItem.querySelector("button.edit");
+
+  deleteButton.onclick = deleteTask;
+  editButton.onclick = editTask;
+}
 
 
 function createNewLabelElement(labelString) {
@@ -680,14 +687,7 @@ function addLabelToSidebar(labelString) {
 
 
 
-function showLabelPage(labelString) {
-  hideAllSections();
 
-  let labelPage = document.getElementById('labelPage');
-  labelPage.style.display = 'block';
-
-  console.log("Afficher la page du label :", labelString);
-}
 function hideAllSections() {
   let sections = document.querySelectorAll('main section');
   sections.forEach(section => {
