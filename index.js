@@ -805,7 +805,6 @@ function closeEditLabel() {
 
 // Label
 let taskInput = document.getElementById("new-task");
-
 let addButton = document.getElementById("add-btn");
 let taskList = document.getElementById("task-list");
 
@@ -830,9 +829,6 @@ let createNewTaskElement = function (taskString) {
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
 
-
-  
-
   return listItem;
 }
 
@@ -850,7 +846,6 @@ let editTask = function () {
 
     updateLabelInSidebar(originalLabelText, label.innerText);
 
- 
     editButton.innerHTML = '<i class="material-icons">edit</i>';
   } else {
     editInput.value = label.innerText;
@@ -924,7 +919,6 @@ let addTask = function () {
       }
     }
 
-    // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
     $("#save_note").click();
 
     taskInput.value = "";
