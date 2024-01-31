@@ -225,16 +225,19 @@ function updateNotes() {
 function addNewNote(id, color, title, content, labels) {
   let notes = $(".notes");
   let noteTemplate = `
-    <div class="notes-content" id="${id}" style="background-color:${color}">
-      <h4 class="note-title">${title}</h4>
-      <p>${content}</p>
-      <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
-      <div class="note-actions">
-        <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-        <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
-        <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
-      </div>
-    </div>
+  <div class="notes-content" id="${id}" style="background-color:${color}">
+         <div class="card-container">
+           ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+           <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+           <p style="padding-left: 20px;">${content}</p>
+           <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
+         </div>
+         <div class="note-actions">
+           <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+           <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+           <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+         </div>
+       </div>
   `;
 
   notes.append(noteTemplate);
@@ -631,255 +634,255 @@ function saveEdit() {
 
 
 
-// // Modal label
-// function openEditLabel() {
-//   let editLabelModal = document.getElementById('editLabel');
-//   editLabelModal.style.display = 'block';
-//   editLabelModal.classList.add('edit-label-modal-open');
-// }
+// Modal label
+function openEditLabel() {
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'block';
+  editLabelModal.classList.add('edit-label-modal-open');
+}
 
-// function closeEditLabel() {
-//   let editLabelModal = document.getElementById('editLabel');
-//   editLabelModal.style.display = 'none';
-//   editLabelModal.classList.remove('edit-label-modal-open');
-// }
+function closeEditLabel() {
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'none';
+  editLabelModal.classList.remove('edit-label-modal-open');
+}
 
 
-// // Label
-// let taskInput = document.getElementById("new-task");
+// Label
+let taskInput = document.getElementById("new-task");
 
-// let addButton = document.getElementById("add-btn");
-// let taskList = document.getElementById("task-list");
+let addButton = document.getElementById("add-btn");
+let taskList = document.getElementById("task-list");
 
-// let createNewTaskElement = function (taskString) {
-//   let listItem = document.createElement("li");
-//   let deleteButton = document.createElement("button");
-//   let label = document.createElement("label");
-//   let editInput = document.createElement("input");
-//   let editButton = document.createElement("button");
+let createNewTaskElement = function (taskString) {
+  let listItem = document.createElement("li");
+  let deleteButton = document.createElement("button");
+  let label = document.createElement("label");
+  let editInput = document.createElement("input");
+  let editButton = document.createElement("button");
   
-//   deleteButton.innerHTML = '<i class="material-icons">delete</i>';
-//   editButton.innerHTML = '<i class="material-icons">edit</i>';
+  deleteButton.innerHTML = '<i class="material-icons">delete</i>';
+  editButton.innerHTML = '<i class="material-icons">edit</i>';
 
-//   deleteButton.className = "delete";
-//   editInput.type = "text";
-//   editButton.className = "edit";
+  deleteButton.className = "delete";
+  editInput.type = "text";
+  editButton.className = "edit";
 
-//   label.innerText = taskString;
+  label.innerText = taskString;
 
-//   listItem.appendChild(deleteButton);
-//   listItem.appendChild(label);
-//   listItem.appendChild(editInput);
-//   listItem.appendChild(editButton);
+  listItem.appendChild(deleteButton);
+  listItem.appendChild(label);
+  listItem.appendChild(editInput);
+  listItem.appendChild(editButton);
 
 
   
 
-//   return listItem;
-// }
+  return listItem;
+}
 
-// let editTask = function () {
-//   let listItem = this.parentNode;
-//   let editInput = listItem.querySelector("input[type=text]");
-//   let editButton = listItem.querySelector("button.edit");
-//   let label = listItem.querySelector("label");
-//   let containsClass = listItem.classList.contains("editMode");
+let editTask = function () {
+  let listItem = this.parentNode;
+  let editInput = listItem.querySelector("input[type=text]");
+  let editButton = listItem.querySelector("button.edit");
+  let label = listItem.querySelector("label");
+  let containsClass = listItem.classList.contains("editMode");
 
-//   if (containsClass) {
-//     let originalLabelText = label.innerText;
+  if (containsClass) {
+    let originalLabelText = label.innerText;
 
-//     label.innerText = editInput.value;
+    label.innerText = editInput.value;
 
-//     updateLabelInSidebar(originalLabelText, label.innerText);
+    updateLabelInSidebar(originalLabelText, label.innerText);
 
  
-//     editButton.innerHTML = '<i class="material-icons">edit</i>';
-//   } else {
-//     editInput.value = label.innerText;
+    editButton.innerHTML = '<i class="material-icons">edit</i>';
+  } else {
+    editInput.value = label.innerText;
 
-//     editButton.innerHTML = '<i class="material-icons">check</i>';
-//   }
+    editButton.innerHTML = '<i class="material-icons">check</i>';
+  }
 
-//   listItem.classList.toggle("editMode");
-// }
+  listItem.classList.toggle("editMode");
+}
 
-// function updateLabelInSidebar(originalLabelText, updatedLabelText) {
-//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+function updateLabelInSidebar(originalLabelText, updatedLabelText) {
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
 
-//   sidebarLabels.forEach(function (sidebarLabel) {
-//     if (sidebarLabel.textContent === originalLabelText) {
-//       sidebarLabel.textContent = updatedLabelText;
-//     }
-//   });
-// }
-
-
-// let deleteTask = function () {
-//   let listItem = this.parentNode;
-//   let label = listItem.querySelector("label");
-
-//   let deletedLabelText = label.innerText;
-
-//   taskList.removeChild(listItem);
-
-//   removeLabelFromSidebar(deletedLabelText);
-
-// }
-
-// function removeLabelFromSidebar(deletedLabelText) {
-//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
-
-//   sidebarLabels.forEach(function (sidebarLabel) {
-//     if (sidebarLabel.textContent === deletedLabelText) {
-//       sidebarLabel.parentNode.remove(); 
-//     }
-//   });
-// }
+  sidebarLabels.forEach(function (sidebarLabel) {
+    if (sidebarLabel.textContent === originalLabelText) {
+      sidebarLabel.textContent = updatedLabelText;
+    }
+  });
+}
 
 
+let deleteTask = function () {
+  let listItem = this.parentNode;
+  let label = listItem.querySelector("label");
+
+  let deletedLabelText = label.innerText;
+
+  taskList.removeChild(listItem);
+
+  removeLabelFromSidebar(deletedLabelText);
+
+}
+
+function removeLabelFromSidebar(deletedLabelText) {
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+
+  sidebarLabels.forEach(function (sidebarLabel) {
+    if (sidebarLabel.textContent === deletedLabelText) {
+      sidebarLabel.parentNode.remove(); 
+    }
+  });
+}
 
 
-// let addTask = function () {
-//   let taskValue = taskInput.value.trim();
 
-//   if (taskValue !== "") {
-//     let listItem = createNewTaskElement(taskValue);
-//     taskList.appendChild(listItem);
-//     bindTaskEvents(listItem);
 
-//     addLabelToSidebar(taskValue);
+let addTask = function () {
+  let taskValue = taskInput.value.trim();
 
-//     let activeNoteId = $(".notes-content.active").attr("id");
+  if (taskValue !== "") {
+    let listItem = createNewTaskElement(taskValue);
+    taskList.appendChild(listItem);
+    bindTaskEvents(listItem);
 
-//     if (activeNoteId) {
-//       let activeNote = notesArray.find(note => note.Index === activeNoteId);
+    addLabelToSidebar(taskValue);
+
+    let activeNoteId = $(".notes-content.active").attr("id");
+
+    if (activeNoteId) {
+      let activeNote = notesArray.find(note => note.Index === activeNoteId);
       
-//       if (activeNote) {
-//         let activeNoteLabels = activeNote.Labels;
+      if (activeNote) {
+        let activeNoteLabels = activeNote.Labels;
         
-//         if (!activeNoteLabels.includes(taskValue)) {
-//           let labelsContainer = $(`#labels-${activeNoteId}`);
-//           labelsContainer.append(`<span class="label">${taskValue}</span>`);
+        if (!activeNoteLabels.includes(taskValue)) {
+          let labelsContainer = $(`#labels-${activeNoteId}`);
+          labelsContainer.append(`<span class="label">${taskValue}</span>`);
   
-//           activeNoteLabels.push(taskValue);
-//         }
-//       }
-//     }
+          activeNoteLabels.push(taskValue);
+        }
+      }
+    }
 
-//     // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
-//     $("#save_note").click();
+    // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
+    $("#save_note").click();
 
-//     taskInput.value = "";
-//   }
-// }
+    taskInput.value = "";
+  }
+}
 
-// addButton.addEventListener("click", addTask);
-
-
-
-
-// let bindTaskEvents = function (taskListItem) {
-//   let deleteButton = taskListItem.querySelector("button.delete");
-//   let editButton = taskListItem.querySelector("button.edit");
-
-//   deleteButton.onclick = deleteTask;
-//   editButton.onclick = editTask;
-// }
-
-
-// function createNewLabelElement(labelString) {
-//   let labelItem = document.createElement("div");
-//   labelItem.classList.add("sidebar-item", "hover");
-
-//   let labelIcon = document.createElement("span");
-//   labelIcon.classList.add("material-icons-outlined", "hover");
-//   labelIcon.textContent = "label";
-
-//   let labelTextSpan = document.createElement("span");
-//   labelTextSpan.classList.add("sidebar-text");
-//   labelTextSpan.textContent = labelString;
-
-//   labelItem.appendChild(labelIcon);
-//   labelItem.appendChild(labelTextSpan);
-
-//   return labelItem;
-// }
-
-// function bindLabelEvents(labelListItem) {
-//   labelListItem.addEventListener('click', function () {
-//     openEditLabel();
-//   });
-// }
+addButton.addEventListener("click", addTask);
 
 
 
-// function addLabelToSidebar(labelString) {
-//   let sidebar = document.querySelector('.sidebar');
-//   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
+
+let bindTaskEvents = function (taskListItem) {
+  let deleteButton = taskListItem.querySelector("button.delete");
+  let editButton = taskListItem.querySelector("button.edit");
+
+  deleteButton.onclick = deleteTask;
+  editButton.onclick = editTask;
+}
+
+
+function createNewLabelElement(labelString) {
+  let labelItem = document.createElement("div");
+  labelItem.classList.add("sidebar-item", "hover");
+
+  let labelIcon = document.createElement("span");
+  labelIcon.classList.add("material-icons-outlined", "hover");
+  labelIcon.textContent = "label";
+
+  let labelTextSpan = document.createElement("span");
+  labelTextSpan.classList.add("sidebar-text");
+  labelTextSpan.textContent = labelString;
+
+  labelItem.appendChild(labelIcon);
+  labelItem.appendChild(labelTextSpan);
+
+  return labelItem;
+}
+
+function bindLabelEvents(labelListItem) {
+  labelListItem.addEventListener('click', function () {
+    openEditLabel();
+  });
+}
+
+
+
+function addLabelToSidebar(labelString) {
+  let sidebar = document.querySelector('.sidebar');
+  let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
   
-//   let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
-//     let newLabelItem = createNewLabelElement(labelString);
-//     sidebar.insertBefore(newLabelItem, editLabelItem);
+  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
+    let newLabelItem = createNewLabelElement(labelString);
+    sidebar.insertBefore(newLabelItem, editLabelItem);
 
-//     newLabelItem.addEventListener('click', function () {
-//       showLabelPage(labelString);
-//     });
-// }
-
-
+    newLabelItem.addEventListener('click', function () {
+      showLabelPage(labelString);
+    });
+}
 
 
-// function hideAllSections() {
-//   let sections = document.querySelectorAll('main section');
-//   sections.forEach(section => {
-//     section.style.display = 'none';
-//   });
-// }
 
-// // Page Label
-// function showLabelPage(labelString) {
-//   hideAllSections();
 
-//   let labelPage = document.getElementById('labelPage');
-//   labelPage.style.display = 'block';
+function hideAllSections() {
+  let sections = document.querySelectorAll('main section');
+  sections.forEach(section => {
+    section.style.display = 'none';
+  });
+}
 
-//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
-//   sidebarLabels.forEach(function (sidebarLabel) {
-//     let sidebarItem = sidebarLabel.parentNode;
-//     if (sidebarLabel.textContent === labelString) {
-//       sidebarItem.classList.add('active');
-//     } else {
-//       sidebarItem.classList.remove('active');
-//     }
-//   });
+// Page Label
+function showLabelPage(labelString) {
+  hideAllSections();
 
-//   console.log("Afficher la page du label :", labelString);
-// }
+  let labelPage = document.getElementById('labelPage');
+  labelPage.style.display = 'block';
 
-// // Sous-menue 
-// document.addEventListener("click", function (event) {
-//   let subMenuContainer = document.querySelector('.submenu-container');
-//   let subMenu = document.getElementById('addNoteSubMenu');
+  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+  sidebarLabels.forEach(function (sidebarLabel) {
+    let sidebarItem = sidebarLabel.parentNode;
+    if (sidebarLabel.textContent === labelString) {
+      sidebarItem.classList.add('active');
+    } else {
+      sidebarItem.classList.remove('active');
+    }
+  });
 
-//   if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target) && event.target.id !== 'addLabelLink') {
-//     subMenu.style.display = 'none';
-//   }
-// });
+  console.log("Afficher la page du label :", labelString);
+}
 
-// function toggleSubMenu() {
-//   let subMenu = document.getElementById('addNoteSubMenu');
-//   subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
-// }
+// Sous-menue 
+document.addEventListener("click", function (event) {
+  let subMenuContainer = document.querySelector('.submenu-container');
+  let subMenu = document.getElementById('addNoteSubMenu');
 
-// function openEditLabel() {
-//   let subMenu = document.getElementById('addNoteSubMenu');
-//   subMenu.style.display = 'none';
+  if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target) && event.target.id !== 'addLabelLink') {
+    subMenu.style.display = 'none';
+  }
+});
 
-//   let editLabelModal = document.getElementById('editLabel');
-//   editLabelModal.style.display = 'block';
-// }
+function toggleSubMenu() {
+  let subMenu = document.getElementById('addNoteSubMenu');
+  subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
+}
 
-// $(document).on("click", ".label.clickable", function () {
-//   let labelString = $(this).text().trim();
-//   showLabelPage(labelString);
-// });
+function openEditLabel() {
+  let subMenu = document.getElementById('addNoteSubMenu');
+  subMenu.style.display = 'none';
+
+  let editLabelModal = document.getElementById('editLabel');
+  editLabelModal.style.display = 'block';
+}
+
+$(document).on("click", ".label.clickable", function () {
+  let labelString = $(this).text().trim();
+  showLabelPage(labelString);
+});
