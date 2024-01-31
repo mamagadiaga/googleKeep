@@ -88,8 +88,8 @@ function closeEditModal() {
 }
 
 function saveEdit() {
-  var editedTitle = document.getElementById("edit-title").value;
-  var editedContent = document.getElementById("edit-content").value;
+  let editedTitle = document.getElementById("edit-title").value;
+  let editedContent = document.getElementById("edit-content").value;
 
   closeEditModal();
 }
@@ -135,11 +135,10 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 
 
 
-
+// Contenu
 // Contenu
 let notesArray = [];
 let archiveArray = [];
-let trashArray = [];
 
 $("#save_note").click(function () {
   let title = $("#input-title").val();
@@ -148,8 +147,6 @@ $("#save_note").click(function () {
   let index = "colour" + Math.ceil(Math.random() * 3);
 
   if (title !== "" || content !== "") {
-    notesArray = JSON.parse(localStorage.getItem("notes") || "[]");
-
     // Extract labels from the task list
     let labels = [];
     $("#task-list li label").each(function () {
@@ -161,75 +158,34 @@ $("#save_note").click(function () {
       Color: bgColor,
       Title: title,
       Content: content,
-      BackgroundColor: bgColor,
-      ImageURL: imageURL,
       Labels: labels, // Add labels to the note
     });
 
-    let jsonStr = JSON.stringify(notesArray);
-    localStorage.setItem("notes", jsonStr);
-    addNewNote(index, bgColor, title, content, imageURL, labels);
+    addNewNote(index, bgColor, title, content, labels);
 
     // Vider les champs
     $("#input-title").val("");
     $("#input-feild").val("");
     $("#colorPicker").val("#ffffff");
-    imageURL = "";
   }
 });
 
-
-
-
 $(document).ready(function () {
-  // let storedNotes = localStorage.getItem("notes");
-  // if (storedNotes) {
-  //   notesArray = JSON.parse(storedNotes);
-  // }
-
-  let storedArchive = localStorage.getItem("archive");
-  if (storedArchive) {
-    archiveArray = JSON.parse(storedArchive);
-  }
-
-  let storedTrash = localStorage.getItem("trash");
-  if (storedTrash) {
-    trashArray = JSON.parse(storedTrash);
-  }
-
-  updateNotes();
-  updateArchive();
-  updateTrash();
-
-  $(".delete-note").click(function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
-
-    let deletedNote = notesArray.find(note => note.Index === noteIndex);
-    trashArray.push(deletedNote);
-
-    notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateTrash();
-  });
-
-
-
-
-  $("#save_change").click(function () {
-    saveEdit();
-  });
-
   $(".notes").on("click", ".delete-note", function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
 
-    let deletedNote = notesArray.find(note => note.Index === noteIndex);
-    trashArray.push(deletedNote);
-
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateTrash();
+    updateNotes();
+  });
+
+  $(".notes").on("click", ".edit-note", function (event) {
+    event.stopPropagation();
+
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
+
+    openEditModal(noteIndex);
   });
 
   $(".notes").on("click", ".archive-note", function () {
@@ -240,21 +196,13 @@ $(document).ready(function () {
     archiveArray.push(archivedNote);
 
     notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateArchive();
+    updateNotes();
   });
 
-  $(".restore-trash-note").click(function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
+  // Other event handlers...
 
-    let restoredNote = trashArray.find(note => note.Index === noteIndex);
-
-    notesArray.push(restoredNote);
-    trashArray = trashArray.filter(note => note.Index !== noteIndex);
-
-    updateLocalStorageAndUI();
-    updateTrash();
+  $("#save_change").click(function () {
+    saveEdit();
   });
 });
 
@@ -266,40 +214,21 @@ function updateNotes() {
     let note = notesArray[i];
     addNewNote(
       note.Index,
-      note.BackgroundColor,
+      note.Color,
       note.Title,
       note.Content,
-      note.ImageURL
+      note.Labels
     );
   }
 }
 
-
-function updateLocalStorageAndUI() {
-  let jsonNotes = JSON.stringify(notesArray);
-  localStorage.setItem("notes", jsonNotes);
-
-  let jsonArchive = JSON.stringify(archiveArray);
-  localStorage.setItem("archive", jsonArchive);
-
-  let jsonTrash = JSON.stringify(trashArray);
-  localStorage.setItem("trash", jsonTrash);
-
-  updateNotes();
-  updateArchive();
-  updateTrash();
-}
-
-function addNewNote(id, color, title, content, imageURL, labels) {
+function addNewNote(id, color, title, content, labels) {
   let notes = $(".notes");
   let noteTemplate = `
     <div class="notes-content" id="${id}" style="background-color:${color}">
-      <div class="card-container">
-        ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
-        <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
-        <p style="padding-left: 20px;">${content}</p>
-        <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
-      </div>
+      <h4 class="note-title">${title}</h4>
+      <p>${content}</p>
+      <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
       <div class="note-actions">
         <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
         <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
@@ -314,58 +243,28 @@ function addNewNote(id, color, title, content, imageURL, labels) {
   labels.forEach(label => {
     labelsContainer.append(`<span class="label clickable">${label}</span>`);
   });
-  
-  
 
   $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
-
-    let note = notesArray.find(note => note.Index === id);
-
-    $("#edit-title").val(note.Title);
-    $("#edit-content").val(note.Content);
 
     openEditModal(id);
   });
+}
 
 
-  $("#" + id).find(".edit-note").click(function (event) {
-    event.stopPropagation();
+function openEditModal(id) {
+  $("#editModal").data("note-id", id);
 
-    let note = notesArray.find(note => note.Index === id);
-
-    $("#edit-title").val(note.Title);
-    $("#edit-content").val(note.Content);
-
-    openEditModal();
-
-    $("#saveEdit").off("click").on("click", function () {
-      let editedTitle = $("#edit-title").val();
-      let editedContent = $("#edit-content").val();
-
-      notesArray.push({
-        Index: id,
-        Color: note.BackgroundColor,
-        Title: editedTitle,
-        Content: editedContent,
-        BackgroundColor: note.BackgroundColor,
-        ImageURL: note.ImageURL,
-      });
-
-      updateLocalStorageAndUI();
-
-      closeEditModal();
-    });
-  });
+  document.getElementById("editModal").style.display = "block";
 }
 
 function saveEdit() {
-  var editedTitle = $("#edit-title").val();
-  var editedContent = $("#edit-content").val();
+  let editedTitle = $("#edit-title").val();
+  let editedContent = $("#edit-content").val();
 
-  var id = $("#editModal").data("note-id");
+  let id = $("#editModal").data("note-id");
 
-  var noteIndex = notesArray.findIndex(note => note.Index === id);
+  let noteIndex = notesArray.findIndex(note => note.Index === id);
   if (noteIndex !== -1) {
     notesArray[noteIndex].Title = editedTitle;
     notesArray[noteIndex].Content = editedContent;
@@ -375,370 +274,612 @@ function saveEdit() {
 
   closeEditModal();
 }
-function openEditModal(id) {
-  $("#editModal").data("note-id", id);
-
-  document.getElementById("editModal").style.display = "block";
-}
-
-function updateArchive() {
-  let archive = $(".archive");
-  archive.empty();
-
-  for (let i = 0; i < archiveArray.length; i++) {
-    let archivedNote = archiveArray[i];
-    addArchivedNote(
-      archivedNote.Index,
-      archivedNote.BackgroundColor,
-      archivedNote.Title,
-      archivedNote.Content,
-      archivedNote.ImageURL
-    );
-  }
-}
-
-
-function addArchivedNote(id, color, title, content, imageURL) {
-  let archive = $(".archive");
-  let archiveTemplate = `
-    <div class="notes-content" id="${id}" style="background-color:${color}">
-    <img src="${imageURL}" alt="Image preview">
-      <h4 class="note-title">${title}</h4>
-      <p>${content}</p>
-      <div class="note-actions">
-        <a href="#" class="delete-archive-note"><i class="material-icons">delete</i></a>
-        <a href="#" class="restore-archive-note"><i class="material-icons">restore</i></a>
-      </div>
-    </div>
-  `;
-  archive.append(archiveTemplate);
-
-  $("#" + id).find(".delete-archive-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateArchive();
-  });
-
-  $("#" + id).find(".restore-archive-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    let restoredNote = archiveArray.find(note => note.Index === noteIndex);
-    notesArray.push(restoredNote);
-    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateArchive();
-  });
-}
 
 
 
-function updateTrash() {
-  let trash = $("#trashPage");
-  trash.empty();
+// // Contenu
+// let notesArray = [];
+// let archiveArray = [];
+// let trashArray = [];
 
-  for (let i = 0; i < trashArray.length; i++) {
-    let trashedNote = trashArray[i];
-    addTrashedNote(
-      trashedNote.Index,
-      trashedNote.BackgroundColor,
-      trashedNote.Title,
-      trashedNote.Content,
-      trashedNote.ImageURL
-    );
-  }
-}
+// $("#save_note").click(function () {
+//   let title = $("#input-title").val();
+//   let content = $("#input-feild").val();
+//   let bgColor = $("#colorPicker").val();
+//   let index = "colour" + Math.ceil(Math.random() * 3);
 
+//   if (title !== "" || content !== "") {
+//     notesArray = JSON.parse(localStorage.getItem("notes") || "[]");
 
-function addTrashedNote(id, color, title, content, imageURL) {
-  let trash = $("#trashPage ");
+//     // Extract labels from the task list
+//     let labels = [];
+//     $("#task-list li label").each(function () {
+//       labels.push($(this).text());
+//     });
 
-  let trashTemplate = `
-    <div class="notes-content" id="${id}" style="background-color:${color}">
-    <img src="${imageURL}" alt="Image preview">
-      <h4 class="note-title">${title}</h4>
-      <p>${content}</p>
-      <div class="note-actions">
-        <a href="#" class="delete-trash-note"><i class="material-icons">delete</i></a>
-        <a href="#" class="restore-trash-note"><i class="material-icons">restore</i></a>
-      </div>
-    </div>
-  `;
-  trash.append(trashTemplate);
+//     notesArray.push({
+//       Index: index,
+//       Color: bgColor,
+//       Title: title,
+//       Content: content,
+//       BackgroundColor: bgColor,
+//       ImageURL: imageURL,
+//       Labels: labels, // Add labels to the note
+//     });
 
-  $("#" + id).find(".delete-trash-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    trashArray = trashArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateTrash();
-  });
+//     let jsonStr = JSON.stringify(notesArray);
+//     localStorage.setItem("notes", jsonStr);
+//     addNewNote(index, bgColor, title, content, imageURL, labels);
 
-  $("#" + id).find(".restore-trash-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    let restoredNote = trashArray.find(note => note.Index === noteIndex);
-    notesArray.push(restoredNote);
-    trashArray = trashArray.filter(note => note.Index !== noteIndex);
-    updateLocalStorageAndUI();
-    updateTrash();
-  });
-}
+//     // Vider les champs
+//     $("#input-title").val("");
+//     $("#input-feild").val("");
+//     $("#colorPicker").val("#ffffff");
+//     imageURL = "";
+//   }
+// });
 
 
 
 
+// $(document).ready(function () {
+//   // let storedNotes = localStorage.getItem("notes");
+//   // if (storedNotes) {
+//   //   notesArray = JSON.parse(storedNotes);
+//   // }
+
+//   let storedArchive = localStorage.getItem("archive");
+//   if (storedArchive) {
+//     archiveArray = JSON.parse(storedArchive);
+//   }
+
+//   let storedTrash = localStorage.getItem("trash");
+//   if (storedTrash) {
+//     trashArray = JSON.parse(storedTrash);
+//   }
+
+//   updateNotes();
+//   updateArchive();
+//   updateTrash();
+
+//   $(".delete-note").click(function () {
+//     let note = $(this).closest(".notes-content");
+//     let noteIndex = note.attr("id");
+
+//     let deletedNote = notesArray.find(note => note.Index === noteIndex);
+//     trashArray.push(deletedNote);
+
+//     notesArray = notesArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateTrash();
+//   });
 
 
 
 
+//   $("#save_change").click(function () {
+//     saveEdit();
+//   });
 
-// Modal label
-function openEditLabel() {
-  let editLabelModal = document.getElementById('editLabel');
-  editLabelModal.style.display = 'block';
-  editLabelModal.classList.add('edit-label-modal-open');
-}
+//   $(".notes").on("click", ".delete-note", function () {
+//     let note = $(this).closest(".notes-content");
+//     let noteIndex = note.attr("id");
 
-function closeEditLabel() {
-  let editLabelModal = document.getElementById('editLabel');
-  editLabelModal.style.display = 'none';
-  editLabelModal.classList.remove('edit-label-modal-open');
-}
+//     let deletedNote = notesArray.find(note => note.Index === noteIndex);
+//     trashArray.push(deletedNote);
+
+//     notesArray = notesArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateTrash();
+//   });
+
+//   $(".notes").on("click", ".archive-note", function () {
+//     let note = $(this).closest(".notes-content");
+//     let noteIndex = note.attr("id");
+
+//     let archivedNote = notesArray.find(note => note.Index === noteIndex);
+//     archiveArray.push(archivedNote);
+
+//     notesArray = notesArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateArchive();
+//   });
+
+//   $(".restore-trash-note").click(function () {
+//     let note = $(this).closest(".notes-content");
+//     let noteIndex = note.attr("id");
+
+//     let restoredNote = trashArray.find(note => note.Index === noteIndex);
+
+//     notesArray.push(restoredNote);
+//     trashArray = trashArray.filter(note => note.Index !== noteIndex);
+
+//     updateLocalStorageAndUI();
+//     updateTrash();
+//   });
+// });
+
+// function updateNotes() {
+//   let notes = $(".notes");
+//   notes.empty();
+
+//   for (let i = 0; i < notesArray.length; i++) {
+//     let note = notesArray[i];
+//     addNewNote(
+//       note.Index,
+//       note.BackgroundColor,
+//       note.Title,
+//       note.Content,
+//       note.ImageURL
+//     );
+//   }
+// }
 
 
-// Label
-let taskInput = document.getElementById("new-task");
+// function updateLocalStorageAndUI() {
+//   let jsonNotes = JSON.stringify(notesArray);
+//   localStorage.setItem("notes", jsonNotes);
 
-let addButton = document.getElementById("add-btn");
-let taskList = document.getElementById("task-list");
+//   let jsonArchive = JSON.stringify(archiveArray);
+//   localStorage.setItem("archive", jsonArchive);
 
-let createNewTaskElement = function (taskString) {
-  let listItem = document.createElement("li");
-  let deleteButton = document.createElement("button");
-  let label = document.createElement("label");
-  let editInput = document.createElement("input");
-  let editButton = document.createElement("button");
+//   let jsonTrash = JSON.stringify(trashArray);
+//   localStorage.setItem("trash", jsonTrash);
+
+//   updateNotes();
+//   updateArchive();
+//   updateTrash();
+// }
+
+// function addNewNote(id, color, title, content, imageURL, labels) {
+//   let notes = $(".notes");
+//   let noteTemplate = `
+//     <div class="notes-content" id="${id}" style="background-color:${color}">
+//       <div class="card-container">
+//         ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+//         <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+//         <p style="padding-left: 20px;">${content}</p>
+//         <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
+//       </div>
+//       <div class="note-actions">
+//         <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+//         <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+//         <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+//       </div>
+//     </div>
+//   `;
+
+//   notes.append(noteTemplate);
+
+//   let labelsContainer = $(`#labels-${id}`);
+//   labels.forEach(label => {
+//     labelsContainer.append(`<span class="label clickable">${label}</span>`);
+//   });
   
-  deleteButton.innerHTML = '<i class="material-icons">delete</i>';
-  editButton.innerHTML = '<i class="material-icons">edit</i>';
+  
 
-  deleteButton.className = "delete";
-  editInput.type = "text";
-  editButton.className = "edit";
+//   $("#" + id).find(".edit-note").click(function (event) {
+//     event.stopPropagation();
 
-  label.innerText = taskString;
+//     let note = notesArray.find(note => note.Index === id);
 
-  listItem.appendChild(deleteButton);
-  listItem.appendChild(label);
-  listItem.appendChild(editInput);
-  listItem.appendChild(editButton);
+//     $("#edit-title").val(note.Title);
+//     $("#edit-content").val(note.Content);
+
+//     openEditModal(id);
+//   });
+
+
+//   $("#" + id).find(".edit-note").click(function (event) {
+//     event.stopPropagation();
+
+//     let note = notesArray.find(note => note.Index === id);
+
+//     $("#edit-title").val(note.Title);
+//     $("#edit-content").val(note.Content);
+
+//     openEditModal();
+
+//     $("#saveEdit").off("click").on("click", function () {
+//       let editedTitle = $("#edit-title").val();
+//       let editedContent = $("#edit-content").val();
+
+//       notesArray.push({
+//         Index: id,
+//         Color: note.BackgroundColor,
+//         Title: editedTitle,
+//         Content: editedContent,
+//         BackgroundColor: note.BackgroundColor,
+//         ImageURL: note.ImageURL,
+//       });
+
+//       updateLocalStorageAndUI();
+
+//       closeEditModal();
+//     });
+//   });
+// }
+
+// function saveEdit() {
+//   let editedTitle = $("#edit-title").val();
+//   let editedContent = $("#edit-content").val();
+
+//   let id = $("#editModal").data("note-id");
+
+//   let noteIndex = notesArray.findIndex(note => note.Index === id);
+//   if (noteIndex !== -1) {
+//     notesArray[noteIndex].Title = editedTitle;
+//     notesArray[noteIndex].Content = editedContent;
+//   }
+
+//   updateLocalStorageAndUI();
+
+//   closeEditModal();
+// }
+// function openEditModal(id) {
+//   $("#editModal").data("note-id", id);
+
+//   document.getElementById("editModal").style.display = "block";
+// }
+
+// function updateArchive() {
+//   let archive = $(".archive");
+//   archive.empty();
+
+//   for (let i = 0; i < archiveArray.length; i++) {
+//     let archivedNote = archiveArray[i];
+//     addArchivedNote(
+//       archivedNote.Index,
+//       archivedNote.BackgroundColor,
+//       archivedNote.Title,
+//       archivedNote.Content,
+//       archivedNote.ImageURL
+//     );
+//   }
+// }
+
+
+// function addArchivedNote(id, color, title, content, imageURL) {
+//   let archive = $(".archive");
+//   let archiveTemplate = `
+//     <div class="notes-content" id="${id}" style="background-color:${color}">
+//     <img src="${imageURL}" alt="Image preview">
+//       <h4 class="note-title">${title}</h4>
+//       <p>${content}</p>
+//       <div class="note-actions">
+//         <a href="#" class="delete-archive-note"><i class="material-icons">delete</i></a>
+//         <a href="#" class="restore-archive-note"><i class="material-icons">restore</i></a>
+//       </div>
+//     </div>
+//   `;
+//   archive.append(archiveTemplate);
+
+//   $("#" + id).find(".delete-archive-note").click(function () {
+//     let noteIndex = $(this).closest(".notes-content").attr("id");
+//     archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateArchive();
+//   });
+
+//   $("#" + id).find(".restore-archive-note").click(function () {
+//     let noteIndex = $(this).closest(".notes-content").attr("id");
+//     let restoredNote = archiveArray.find(note => note.Index === noteIndex);
+//     notesArray.push(restoredNote);
+//     archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateArchive();
+//   });
+// }
+
+
+
+// function updateTrash() {
+//   let trash = $("#trashPage");
+//   trash.empty();
+
+//   for (let i = 0; i < trashArray.length; i++) {
+//     let trashedNote = trashArray[i];
+//     addTrashedNote(
+//       trashedNote.Index,
+//       trashedNote.BackgroundColor,
+//       trashedNote.Title,
+//       trashedNote.Content,
+//       trashedNote.ImageURL
+//     );
+//   }
+// }
+
+
+// function addTrashedNote(id, color, title, content, imageURL) {
+//   let trash = $("#trashPage ");
+
+//   let trashTemplate = `
+//     <div class="notes-content" id="${id}" style="background-color:${color}">
+//     <img src="${imageURL}" alt="Image preview">
+//       <h4 class="note-title">${title}</h4>
+//       <p>${content}</p>
+//       <div class="note-actions">
+//         <a href="#" class="delete-trash-note"><i class="material-icons">delete</i></a>
+//         <a href="#" class="restore-trash-note"><i class="material-icons">restore</i></a>
+//       </div>
+//     </div>
+//   `;
+//   trash.append(trashTemplate);
+
+//   $("#" + id).find(".delete-trash-note").click(function () {
+//     let noteIndex = $(this).closest(".notes-content").attr("id");
+//     trashArray = trashArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateTrash();
+//   });
+
+//   $("#" + id).find(".restore-trash-note").click(function () {
+//     let noteIndex = $(this).closest(".notes-content").attr("id");
+//     let restoredNote = trashArray.find(note => note.Index === noteIndex);
+//     notesArray.push(restoredNote);
+//     trashArray = trashArray.filter(note => note.Index !== noteIndex);
+//     updateLocalStorageAndUI();
+//     updateTrash();
+//   });
+// }
+
+
+
+
+
+
+
+
+
+// // Modal label
+// function openEditLabel() {
+//   let editLabelModal = document.getElementById('editLabel');
+//   editLabelModal.style.display = 'block';
+//   editLabelModal.classList.add('edit-label-modal-open');
+// }
+
+// function closeEditLabel() {
+//   let editLabelModal = document.getElementById('editLabel');
+//   editLabelModal.style.display = 'none';
+//   editLabelModal.classList.remove('edit-label-modal-open');
+// }
+
+
+// // Label
+// let taskInput = document.getElementById("new-task");
+
+// let addButton = document.getElementById("add-btn");
+// let taskList = document.getElementById("task-list");
+
+// let createNewTaskElement = function (taskString) {
+//   let listItem = document.createElement("li");
+//   let deleteButton = document.createElement("button");
+//   let label = document.createElement("label");
+//   let editInput = document.createElement("input");
+//   let editButton = document.createElement("button");
+  
+//   deleteButton.innerHTML = '<i class="material-icons">delete</i>';
+//   editButton.innerHTML = '<i class="material-icons">edit</i>';
+
+//   deleteButton.className = "delete";
+//   editInput.type = "text";
+//   editButton.className = "edit";
+
+//   label.innerText = taskString;
+
+//   listItem.appendChild(deleteButton);
+//   listItem.appendChild(label);
+//   listItem.appendChild(editInput);
+//   listItem.appendChild(editButton);
 
 
   
 
-  return listItem;
-}
+//   return listItem;
+// }
 
-let editTask = function () {
-  let listItem = this.parentNode;
-  let editInput = listItem.querySelector("input[type=text]");
-  let editButton = listItem.querySelector("button.edit");
-  let label = listItem.querySelector("label");
-  let containsClass = listItem.classList.contains("editMode");
+// let editTask = function () {
+//   let listItem = this.parentNode;
+//   let editInput = listItem.querySelector("input[type=text]");
+//   let editButton = listItem.querySelector("button.edit");
+//   let label = listItem.querySelector("label");
+//   let containsClass = listItem.classList.contains("editMode");
 
-  if (containsClass) {
-    let originalLabelText = label.innerText;
+//   if (containsClass) {
+//     let originalLabelText = label.innerText;
 
-    label.innerText = editInput.value;
+//     label.innerText = editInput.value;
 
-    updateLabelInSidebar(originalLabelText, label.innerText);
+//     updateLabelInSidebar(originalLabelText, label.innerText);
 
  
-    editButton.innerHTML = '<i class="material-icons">edit</i>';
-  } else {
-    editInput.value = label.innerText;
+//     editButton.innerHTML = '<i class="material-icons">edit</i>';
+//   } else {
+//     editInput.value = label.innerText;
 
-    editButton.innerHTML = '<i class="material-icons">check</i>';
-  }
+//     editButton.innerHTML = '<i class="material-icons">check</i>';
+//   }
 
-  listItem.classList.toggle("editMode");
-}
+//   listItem.classList.toggle("editMode");
+// }
 
-function updateLabelInSidebar(originalLabelText, updatedLabelText) {
-  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+// function updateLabelInSidebar(originalLabelText, updatedLabelText) {
+//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
 
-  sidebarLabels.forEach(function (sidebarLabel) {
-    if (sidebarLabel.textContent === originalLabelText) {
-      sidebarLabel.textContent = updatedLabelText;
-    }
-  });
-}
-
-
-let deleteTask = function () {
-  let listItem = this.parentNode;
-  let label = listItem.querySelector("label");
-
-  let deletedLabelText = label.innerText;
-
-  taskList.removeChild(listItem);
-
-  removeLabelFromSidebar(deletedLabelText);
-
-}
-
-function removeLabelFromSidebar(deletedLabelText) {
-  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
-
-  sidebarLabels.forEach(function (sidebarLabel) {
-    if (sidebarLabel.textContent === deletedLabelText) {
-      sidebarLabel.parentNode.remove(); 
-    }
-  });
-}
+//   sidebarLabels.forEach(function (sidebarLabel) {
+//     if (sidebarLabel.textContent === originalLabelText) {
+//       sidebarLabel.textContent = updatedLabelText;
+//     }
+//   });
+// }
 
 
+// let deleteTask = function () {
+//   let listItem = this.parentNode;
+//   let label = listItem.querySelector("label");
+
+//   let deletedLabelText = label.innerText;
+
+//   taskList.removeChild(listItem);
+
+//   removeLabelFromSidebar(deletedLabelText);
+
+// }
+
+// function removeLabelFromSidebar(deletedLabelText) {
+//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+
+//   sidebarLabels.forEach(function (sidebarLabel) {
+//     if (sidebarLabel.textContent === deletedLabelText) {
+//       sidebarLabel.parentNode.remove(); 
+//     }
+//   });
+// }
 
 
-let addTask = function () {
-  let taskValue = taskInput.value.trim();
 
-  if (taskValue !== "") {
-    let listItem = createNewTaskElement(taskValue);
-    taskList.appendChild(listItem);
-    bindTaskEvents(listItem);
 
-    addLabelToSidebar(taskValue);
+// let addTask = function () {
+//   let taskValue = taskInput.value.trim();
 
-    let activeNoteId = $(".notes-content.active").attr("id");
+//   if (taskValue !== "") {
+//     let listItem = createNewTaskElement(taskValue);
+//     taskList.appendChild(listItem);
+//     bindTaskEvents(listItem);
 
-    if (activeNoteId) {
-      let activeNote = notesArray.find(note => note.Index === activeNoteId);
+//     addLabelToSidebar(taskValue);
+
+//     let activeNoteId = $(".notes-content.active").attr("id");
+
+//     if (activeNoteId) {
+//       let activeNote = notesArray.find(note => note.Index === activeNoteId);
       
-      if (activeNote) {
-        let activeNoteLabels = activeNote.Labels;
+//       if (activeNote) {
+//         let activeNoteLabels = activeNote.Labels;
         
-        if (!activeNoteLabels.includes(taskValue)) {
-          let labelsContainer = $(`#labels-${activeNoteId}`);
-          labelsContainer.append(`<span class="label">${taskValue}</span>`);
+//         if (!activeNoteLabels.includes(taskValue)) {
+//           let labelsContainer = $(`#labels-${activeNoteId}`);
+//           labelsContainer.append(`<span class="label">${taskValue}</span>`);
   
-          activeNoteLabels.push(taskValue);
-        }
-      }
-    }
+//           activeNoteLabels.push(taskValue);
+//         }
+//       }
+//     }
 
-    // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
-    $("#save_note").click();
+//     // Sauvegarder la note (assurez-vous que cette partie fonctionne correctement)
+//     $("#save_note").click();
 
-    taskInput.value = "";
-  }
-}
+//     taskInput.value = "";
+//   }
+// }
 
-addButton.addEventListener("click", addTask);
-
-
-
-
-let bindTaskEvents = function (taskListItem) {
-  let deleteButton = taskListItem.querySelector("button.delete");
-  let editButton = taskListItem.querySelector("button.edit");
-
-  deleteButton.onclick = deleteTask;
-  editButton.onclick = editTask;
-}
-
-
-function createNewLabelElement(labelString) {
-  let labelItem = document.createElement("div");
-  labelItem.classList.add("sidebar-item", "hover");
-
-  let labelIcon = document.createElement("span");
-  labelIcon.classList.add("material-icons-outlined", "hover");
-  labelIcon.textContent = "label";
-
-  let labelTextSpan = document.createElement("span");
-  labelTextSpan.classList.add("sidebar-text");
-  labelTextSpan.textContent = labelString;
-
-  labelItem.appendChild(labelIcon);
-  labelItem.appendChild(labelTextSpan);
-
-  return labelItem;
-}
-
-function bindLabelEvents(labelListItem) {
-  labelListItem.addEventListener('click', function () {
-    openEditLabel();
-  });
-}
+// addButton.addEventListener("click", addTask);
 
 
 
-function addLabelToSidebar(labelString) {
-  let sidebar = document.querySelector('.sidebar');
-  let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
+
+// let bindTaskEvents = function (taskListItem) {
+//   let deleteButton = taskListItem.querySelector("button.delete");
+//   let editButton = taskListItem.querySelector("button.edit");
+
+//   deleteButton.onclick = deleteTask;
+//   editButton.onclick = editTask;
+// }
+
+
+// function createNewLabelElement(labelString) {
+//   let labelItem = document.createElement("div");
+//   labelItem.classList.add("sidebar-item", "hover");
+
+//   let labelIcon = document.createElement("span");
+//   labelIcon.classList.add("material-icons-outlined", "hover");
+//   labelIcon.textContent = "label";
+
+//   let labelTextSpan = document.createElement("span");
+//   labelTextSpan.classList.add("sidebar-text");
+//   labelTextSpan.textContent = labelString;
+
+//   labelItem.appendChild(labelIcon);
+//   labelItem.appendChild(labelTextSpan);
+
+//   return labelItem;
+// }
+
+// function bindLabelEvents(labelListItem) {
+//   labelListItem.addEventListener('click', function () {
+//     openEditLabel();
+//   });
+// }
+
+
+
+// function addLabelToSidebar(labelString) {
+//   let sidebar = document.querySelector('.sidebar');
+//   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
   
-  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
-    let newLabelItem = createNewLabelElement(labelString);
-    sidebar.insertBefore(newLabelItem, editLabelItem);
+//   let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
+//     let newLabelItem = createNewLabelElement(labelString);
+//     sidebar.insertBefore(newLabelItem, editLabelItem);
 
-    newLabelItem.addEventListener('click', function () {
-      showLabelPage(labelString);
-    });
-}
-
-
+//     newLabelItem.addEventListener('click', function () {
+//       showLabelPage(labelString);
+//     });
+// }
 
 
-function hideAllSections() {
-  let sections = document.querySelectorAll('main section');
-  sections.forEach(section => {
-    section.style.display = 'none';
-  });
-}
 
-// Page Label
-function showLabelPage(labelString) {
-  hideAllSections();
 
-  let labelPage = document.getElementById('labelPage');
-  labelPage.style.display = 'block';
+// function hideAllSections() {
+//   let sections = document.querySelectorAll('main section');
+//   sections.forEach(section => {
+//     section.style.display = 'none';
+//   });
+// }
 
-  let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
-  sidebarLabels.forEach(function (sidebarLabel) {
-    let sidebarItem = sidebarLabel.parentNode;
-    if (sidebarLabel.textContent === labelString) {
-      sidebarItem.classList.add('active');
-    } else {
-      sidebarItem.classList.remove('active');
-    }
-  });
+// // Page Label
+// function showLabelPage(labelString) {
+//   hideAllSections();
 
-  console.log("Afficher la page du label :", labelString);
-}
+//   let labelPage = document.getElementById('labelPage');
+//   labelPage.style.display = 'block';
 
-// Sous-menue 
-document.addEventListener("click", function (event) {
-  let subMenuContainer = document.querySelector('.submenu-container');
-  let subMenu = document.getElementById('addNoteSubMenu');
+//   let sidebarLabels = document.querySelectorAll('.sidebar-item .sidebar-text');
+//   sidebarLabels.forEach(function (sidebarLabel) {
+//     let sidebarItem = sidebarLabel.parentNode;
+//     if (sidebarLabel.textContent === labelString) {
+//       sidebarItem.classList.add('active');
+//     } else {
+//       sidebarItem.classList.remove('active');
+//     }
+//   });
 
-  if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target) && event.target.id !== 'addLabelLink') {
-    subMenu.style.display = 'none';
-  }
-});
+//   console.log("Afficher la page du label :", labelString);
+// }
 
-function toggleSubMenu() {
-  let subMenu = document.getElementById('addNoteSubMenu');
-  subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
-}
+// // Sous-menue 
+// document.addEventListener("click", function (event) {
+//   let subMenuContainer = document.querySelector('.submenu-container');
+//   let subMenu = document.getElementById('addNoteSubMenu');
 
-function openEditLabel() {
-  let subMenu = document.getElementById('addNoteSubMenu');
-  subMenu.style.display = 'none';
+//   if (!subMenuContainer.contains(event.target) && !subMenu.contains(event.target) && event.target.id !== 'addLabelLink') {
+//     subMenu.style.display = 'none';
+//   }
+// });
 
-  let editLabelModal = document.getElementById('editLabel');
-  editLabelModal.style.display = 'block';
-}
+// function toggleSubMenu() {
+//   let subMenu = document.getElementById('addNoteSubMenu');
+//   subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
+// }
 
-$(document).on("click", ".label.clickable", function () {
-  let labelString = $(this).text().trim();
-  showLabelPage(labelString);
-});
+// function openEditLabel() {
+//   let subMenu = document.getElementById('addNoteSubMenu');
+//   subMenu.style.display = 'none';
+
+//   let editLabelModal = document.getElementById('editLabel');
+//   editLabelModal.style.display = 'block';
+// }
+
+// $(document).on("click", ".label.clickable", function () {
+//   let labelString = $(this).text().trim();
+//   showLabelPage(labelString);
+// });
