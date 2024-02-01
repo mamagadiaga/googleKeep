@@ -172,8 +172,6 @@ $(document).ready(function () {
 
 
 // Notes
-
-
 function addNewNote(id, color, title, content, labels) {
   let notes = $(".notes");
   let noteTemplate = `
@@ -335,10 +333,13 @@ function addArchivedNote(id, color, title, content, labels) {
 
 
 function openEditModal(id) {
+  let note = notesArray.find(note => note.Index === id);
+  $("#edit-title").val(note.Title);
+  $("#edit-content").val(note.Content);
   $("#editModal").data("note-id", id);
-
-  document.getElementById("editModal").style.display = "block";
+  $("#editModal").show(); 
 }
+
 
 function saveEdit() {
   let editedTitle = $("#edit-title").val();
