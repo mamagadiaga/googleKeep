@@ -334,7 +334,7 @@ input:focus {
   font-weight: bold;
 }
 
-.note-container {
+.note-container, .corbeille, .archive {
   text-align: center;
   width: 100%;
   overflow: hidden;
@@ -473,7 +473,6 @@ textarea {
 /* other pages */
 .trash {
   text-align: center;
-  margin-top: 100px;
 }
 
 .edit-note {
@@ -490,79 +489,10 @@ textarea {
 .corbeille {
   width: 100%;
   text-align: center;
-  padding-left: 20%;
 }
-
-
-
-
-
-
-
-
-
-
-@media screen and (max-width: 868px) {
-  .sidebar-item .sidebar-text {
-    display: none;
-  }
-
-  .sidebar {
-    width: auto;
-  }
-
-  .sidebar-item {
-    padding: 8px;
-  }
-
-  .sidebar-item .material-icons-outlined {
-    font-size: 1.5rem;
-  }
-
-
-  .sidebar-item span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .contenu{
-    padding-left: 15%;
-  }
-.card{
-  width: 80%;
-}
-}
-
-
-@media screen and  (max-width: 650px) {
-  .none {
-   display: none;
-  } 
-  .icons a {
-    padding: 0;
-  }
-  .form-container{
-    width: 80%;
-  }
-}
-@media screen and  (max-width: 530px) {
-  .none {
-   display: none;
-  } 
-}
-
-
-
-
-
-
-
-
-
 
 
 /* Labels */
-
 .containerLabel {
   display: block;
   width: 80%;
@@ -783,4 +713,65 @@ p>button:hover {
   font-size: 15px;
   padding: 5px;
   display: inline-block;
+}
+
+.corbeille-notes-container, .archive-notes-container {
+  margin-top: 20px;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+
+
+
+/* Responsive */
+@media screen and (max-width: 868px) {
+  .sidebar-item .sidebar-text {
+    display: none;
+  }
+
+  .sidebar {
+    width: auto;
+  }
+
+  .sidebar-item {
+    padding: 8px;
+  }
+
+  .sidebar-item .material-icons-outlined {
+    font-size: 1.5rem;
+  }
+
+
+  .sidebar-item span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .contenu{
+    padding-left: 15%;
+  }
+.card{
+  width: 80%;
+}
+}
+
+@media screen and  (max-width: 650px) {
+  .none {
+   display: none;
+  } 
+  .icons a {
+    padding: 0;
+  }
+  .form-container{
+    width: 80%;
+  }
+}
+@media screen and  (max-width: 530px) {
+  .none {
+   display: none;
+  } 
 }

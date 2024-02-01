@@ -260,6 +260,107 @@ $("#save_note").click(function () {
   }
 });
 
+
+
+
+
+
+// Archive
+$(".notes").on("click", ".archive-note", function () {
+  let note = $(this).closest(".notes-content");
+  let noteIndex = note.attr("id");
+
+  let archivedNote = notesArray.find(note => note.Index === noteIndex);
+  archiveArray.push(archivedNote);
+
+  notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  updateNotes();
+  updateArchive(); 
+});
+
+
+function updateArchive() {
+  let archive = $(".archive");
+  archive.empty();
+
+  for (let i = 0; i < archiveArray.length; i++) {
+    let archivedNote = archiveArray[i];
+    addArchivedNote(
+      archivedNote.Index,
+      archivedNote.Color,
+      archivedNote.Title,
+      archivedNote.Content,
+      archivedNote.Labels
+    );
+  }
+}
+
+function addArchivedNote(id, color, title, content, labels) {
+  let archive = $(".archive");
+  let archiveTemplate = `
+    <div class="notes-content" id="${id}" style="background-color:${color}">
+    <div class="card-container">
+      ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+      <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+      <p style="padding-left: 20px;">${content}</p>
+      <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
+    </div>
+    <div class="note-actions">
+    <a href="#" class="delete-archive-note"><i class="material-icons">delete</i></a>
+    <a href="#" class="restore-archive-note"><i class="material-icons">restore</i></a>
+    </div>
+  </div>
+  `;
+  archive.append(archiveTemplate);
+
+  let labelsContainer = $(`#labels-${id}`);
+  labels.forEach(label => {
+    labelsContainer.append(`<span class="label clickable">${label}</span>`);
+  });
+  
+  $("#" + id).find(".delete-archive-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+    updateArchive();
+  });
+
+  $("#" + id).find(".restore-archive-note").click(function () {
+    let noteIndex = $(this).closest(".notes-content").attr("id");
+    let restoredNote = archiveArray.find(note => note.Index === noteIndex);
+    notesArray.push(restoredNote);
+    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
+    updateNotes();
+    updateArchive();
+  });
+
+}
+
+function openEditModal(id) {
+  let note = notesArray.find(note => note.Index === id);
+  $("#edit-title").val(note.Title);
+  $("#edit-content").val(note.Content);
+  $("#editModal").data("note-id", id);
+  $("#editModal").show();
+}
+
+function saveEdit() {
+  let editedTitle = $("#edit-title").val();
+  let editedContent = $("#edit-content").val();
+
+  let id = $("#editModal").data("note-id");
+
+  let noteIndex = notesArray.findIndex(note => note.Index === id);
+  if (noteIndex !== -1) {
+    notesArray[noteIndex].Title = editedTitle;
+    notesArray[noteIndex].Content = editedContent;
+  }
+
+  updateLocalStorageAndUI();
+
+  closeEditModal();
+}
+
+
 // Delete
 $(".notes").on("click", ".delete-note", function () {
   let note = $(this).closest(".notes-content");
@@ -340,104 +441,6 @@ function deleteNoteFromTrash(id) {
   trashArray = trashArray.filter(note => note.Index !== id);
   updateTrash();
 }
-
-
-
-// Archive
-$(".notes").on("click", ".archive-note", function () {
-  let note = $(this).closest(".notes-content");
-  let noteIndex = note.attr("id");
-
-  let archivedNote = notesArray.find(note => note.Index === noteIndex);
-  archiveArray.push(archivedNote);
-
-  notesArray = notesArray.filter(note => note.Index !== noteIndex);
-  updateNotes();
-  updateArchive();
-});
-
-function updateArchive() {
-  let archive = $(".archive");
-  archive.empty();
-
-  for (let i = 0; i < archiveArray.length; i++) {
-    let archivedNote = archiveArray[i];
-    addArchivedNote(
-      archivedNote.Index,
-      archivedNote.Color,
-      archivedNote.Title,
-      archivedNote.Content,
-      archivedNote.Labels
-    );
-  }
-}
-
-function addArchivedNote(id, color, title, content, labels) {
-  let archive = $(".archive");
-  let archiveTemplate = `
-    <div class="notes-content" id="${id}" style="background-color:${color}">
-    <div class="card-container">
-      ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
-      <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
-      <p style="padding-left: 20px;">${content}</p>
-      <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
-    </div>
-    <div class="note-actions">
-    <a href="#" class="delete-archive-note"><i class="material-icons">delete</i></a>
-    <a href="#" class="restore-archive-note"><i class="material-icons">restore</i></a>
-    </div>
-  </div>
-  `;
-  archive.append(archiveTemplate);
-
-  let labelsContainer = $(`#labels-${id}`);
-  labels.forEach(label => {
-    labelsContainer.append(`<span class="label clickable">${label}</span>`);
-  });
-
-  $("#" + id).find(".delete-archive-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
-    updateArchive();
-  });
-
-  $("#" + id).find(".restore-archive-note").click(function () {
-    let noteIndex = $(this).closest(".notes-content").attr("id");
-    let restoredNote = archiveArray.find(note => note.Index === noteIndex);
-    notesArray.push(restoredNote);
-    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
-    updateNotes();
-    updateArchive();
-  });
-
-}
-
-function openEditModal(id) {
-  let note = notesArray.find(note => note.Index === id);
-  $("#edit-title").val(note.Title);
-  $("#edit-content").val(note.Content);
-  $("#editModal").data("note-id", id);
-  $("#editModal").show();
-}
-
-function saveEdit() {
-  let editedTitle = $("#edit-title").val();
-  let editedContent = $("#edit-content").val();
-
-  let id = $("#editModal").data("note-id");
-
-  let noteIndex = notesArray.findIndex(note => note.Index === id);
-  if (noteIndex !== -1) {
-    notesArray[noteIndex].Title = editedTitle;
-    notesArray[noteIndex].Content = editedContent;
-  }
-
-  updateLocalStorageAndUI();
-
-  closeEditModal();
-}
-
-
 
 // // Contenu
 // let notesArray = [];
