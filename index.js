@@ -131,45 +131,54 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 
 
 
-
-
-
-
-// Contenu
+// Content
 let notesArray = [];
 let archiveArray = [];
 
-
 $(document).ready(function () {
-  
 
   // Edit
-  $(".notes").on("click", ".edit-note", function (event) {
+  $("#" + id).find(".edit-note").click(function (event) {
     event.stopPropagation();
 
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
+    let note = notesArray.find(note => note.Index === id);
 
-    openEditModal(noteIndex);
-  }); 
+    $("#edit-title").val(note.Title);
+    $("#edit-content").val(note.Content);
 
+    openEditModal();
 
-  
- 
-  
+    $("#saveEdit").off("click").on("click", function () {
+      let editedTitle = $("#edit-title").val();
+      let editedContent = $("#edit-content").val();
 
+      notesArray.push({
+        Index: id,
+        Color: note.BackgroundColor,
+        Title: editedTitle,
+        Content: editedContent,
+        BackgroundColor: note.BackgroundColor,
+        ImageURL: note.ImageURL,
+      });
+
+      updateLocalStorageAndUI();
+
+      closeEditModal();
+    });
+  });
 
   $("#save_change").click(function () {
     saveEdit();
   });
-  
+
 });
 
 
-
-
-
-
+function updateLocalStorageAndUI() {
+  let jsonStr = JSON.stringify(notesArray);
+  localStorage.setItem("notes", jsonStr);
+  updateNotes();
+}
 
 // Notes
 function addNewNote(id, color, title, content, labels) {
@@ -237,7 +246,7 @@ $("#save_note").click(function () {
       Color: bgColor,
       Title: title,
       Content: content,
-      Labels: labels, 
+      Labels: labels,
     });
 
     addNewNote(index, bgColor, title, content, labels);
@@ -260,7 +269,7 @@ $(".notes").on("click", ".archive-note", function () {
 
   notesArray = notesArray.filter(note => note.Index !== noteIndex);
   updateNotes();
-  updateArchive(); 
+  updateArchive();
 });
 
 // Delete
@@ -311,7 +320,7 @@ function addArchivedNote(id, color, title, content, labels) {
   labels.forEach(label => {
     labelsContainer.append(`<span class="label clickable">${label}</span>`);
   });
-  
+
   $("#" + id).find(".delete-archive-note").click(function () {
     let noteIndex = $(this).closest(".notes-content").attr("id");
     archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
@@ -329,17 +338,13 @@ function addArchivedNote(id, color, title, content, labels) {
 
 }
 
-
-
-
 function openEditModal(id) {
   let note = notesArray.find(note => note.Index === id);
   $("#edit-title").val(note.Title);
   $("#edit-content").val(note.Content);
   $("#editModal").data("note-id", id);
-  $("#editModal").show(); 
+  $("#editModal").show();
 }
-
 
 function saveEdit() {
   let editedTitle = $("#edit-title").val();
@@ -538,8 +543,8 @@ function saveEdit() {
 //   labels.forEach(label => {
 //     labelsContainer.append(`<span class="label clickable">${label}</span>`);
 //   });
-  
-  
+
+
 
 //   $("#" + id).find(".edit-note").click(function (event) {
 //     event.stopPropagation();
@@ -739,7 +744,7 @@ let createNewTaskElement = function (taskString) {
   let label = document.createElement("label");
   let editInput = document.createElement("input");
   let editButton = document.createElement("button");
-  
+
   deleteButton.innerHTML = '<i class="material-icons">delete</i>';
   editButton.innerHTML = '<i class="material-icons">edit</i>';
 
@@ -809,7 +814,7 @@ function removeLabelFromSidebar(deletedLabelText) {
 
   sidebarLabels.forEach(function (sidebarLabel) {
     if (sidebarLabel.textContent === deletedLabelText) {
-      sidebarLabel.parentNode.remove(); 
+      sidebarLabel.parentNode.remove();
     }
   });
 }
@@ -831,14 +836,14 @@ let addTask = function () {
 
     if (activeNoteId) {
       let activeNote = notesArray.find(note => note.Index === activeNoteId);
-      
+
       if (activeNote) {
         let activeNoteLabels = activeNote.Labels;
-        
+
         if (!activeNoteLabels.includes(taskValue)) {
           let labelsContainer = $(`#labels-${activeNoteId}`);
           labelsContainer.append(`<span class="label">${taskValue}</span>`);
-  
+
           activeNoteLabels.push(taskValue);
         }
       }
@@ -893,14 +898,14 @@ function bindLabelEvents(labelListItem) {
 function addLabelToSidebar(labelString) {
   let sidebar = document.querySelector('.sidebar');
   let editLabelItem = sidebar.querySelector('.sidebar-item[onclick="openEditLabel(\'editLabel\')"]');
-  
-  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
-    let newLabelItem = createNewLabelElement(labelString);
-    sidebar.insertBefore(newLabelItem, editLabelItem);
 
-    newLabelItem.addEventListener('click', function () {
-      showLabelPage(labelString);
-    });
+  let editInput = document.getElementById('editLabel').querySelector('input[type="text"]');
+  let newLabelItem = createNewLabelElement(labelString);
+  sidebar.insertBefore(newLabelItem, editLabelItem);
+
+  newLabelItem.addEventListener('click', function () {
+    showLabelPage(labelString);
+  });
 }
 
 

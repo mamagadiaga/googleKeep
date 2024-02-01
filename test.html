@@ -1,36 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<!--  -->
 
 
-    <style>
-        /* Basic Style */
-<<<<<<< HEAD
 
-    </style>
-</head>
-
-<body>
-   
+<script>
 
 
-    <script>
-=======
->>>>>>> e04ad179ec99641914ff61a533a50198e090fbba
+    function updateLocalStorageAndUI() {
+        let jsonStr = JSON.stringify(notesArray);
+        localStorage.setItem("notes", jsonStr);
+        updateNotes();
+    }
 
-    </style>
-</head>
+    $("#" + id).find(".edit-note").click(function (event) {
+        event.stopPropagation();
 
-<body>
-   
+        let note = notesArray.find(note => note.Index === id);
 
-<<<<<<< HEAD
-=======
-    <script>
-       
->>>>>>> e04ad179ec99641914ff61a533a50198e090fbba
-    </script>
+        $("#edit-title").val(note.Title);
+        $("#edit-content").val(note.Content);
+
+        openEditModal(id);
+    });
+
+
+    $("#" + id).find(".edit-note").click(function (event) {
+        event.stopPropagation();
+
+        let note = notesArray.find(note => note.Index === id);
+
+        $("#edit-title").val(note.Title);
+        $("#edit-content").val(note.Content);
+
+        openEditModal();
+
+        $("#saveEdit").off("click").on("click", function () {
+            let editedTitle = $("#edit-title").val();
+            let editedContent = $("#edit-content").val();
+
+            notesArray.push({
+                Index: id,
+                Color: note.BackgroundColor,
+                Title: editedTitle,
+                Content: editedContent,
+                BackgroundColor: note.BackgroundColor,
+                ImageURL: note.ImageURL,
+            });
+
+            updateLocalStorageAndUI();
+
+            closeEditModal();
+        });
+    });
+    
+    function saveEdit() {
+        var editedTitle = $("#edit-title").val();
+        var editedContent = $("#edit-content").val();
+
+        var id = $("#editModal").data("note-id");
+
+        var noteIndex = notesArray.findIndex(note => note.Index === id);
+        if (noteIndex !== -1) {
+            notesArray[noteIndex].Title = editedTitle;
+            notesArray[noteIndex].Content = editedContent;
+        }
+
+        updateLocalStorageAndUI();
+
+        closeEditModal();
+    }
+    function openEditModal(id) {
+        $("#editModal").data("note-id", id);
+
+        document.getElementById("editModal").style.display = "block";
+    }
+
+
+</script>
