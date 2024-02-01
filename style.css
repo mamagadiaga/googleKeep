@@ -334,7 +334,7 @@ input:focus {
   font-weight: bold;
 }
 
-.note-container, .corbeille, .archive {
+.note-container, .corbeille {
   text-align: center;
   width: 100%;
   overflow: hidden;
@@ -485,11 +485,6 @@ textarea {
   margin-right: 40px;
 }
 
-.archive,
-.corbeille {
-  width: 100%;
-  text-align: center;
-}
 
 
 /* Labels */
@@ -498,7 +493,6 @@ textarea {
   width: 80%;
   margin: 5px auto 100px;
   background-color: #fff;
-  /* padding: 0px 10px 10px 10px; */
 }
 
 
@@ -565,7 +559,6 @@ input[type="text"]:focus {
 
 
 /* New Task */
-
 label[for='new-task'] {
   display: block;
   margin: 0 0 20px;
@@ -715,7 +708,7 @@ p>button:hover {
   display: inline-block;
 }
 
-.corbeille-notes-container, .archive-notes-container {
+.corbeille-notes-container, .archive {
   margin-top: 20px;
   border-radius: 5px;
   display: grid;
