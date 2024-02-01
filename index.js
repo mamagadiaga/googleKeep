@@ -139,6 +139,89 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 let notesArray = [];
 let archiveArray = [];
 
+
+$(document).ready(function () {
+  
+
+  // Edit
+  $(".notes").on("click", ".edit-note", function (event) {
+    event.stopPropagation();
+
+    let note = $(this).closest(".notes-content");
+    let noteIndex = note.attr("id");
+
+    openEditModal(noteIndex);
+  }); 
+
+
+  
+ 
+  
+
+
+  $("#save_change").click(function () {
+    saveEdit();
+  });
+  
+});
+
+
+
+
+
+
+
+// Notes
+
+
+function addNewNote(id, color, title, content, labels) {
+  let notes = $(".notes");
+  let noteTemplate = `
+  <div class="notes-content" id="${id}" style="background-color:${color}">
+         <div class="card-container">
+           ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+           <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+           <p style="padding-left: 20px;">${content}</p>
+           <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
+         </div>
+         <div class="note-actions">
+           <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
+           <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
+           <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
+         </div>
+       </div>
+  `;
+
+  notes.append(noteTemplate);
+
+  let labelsContainer = $(`#labels-${id}`);
+  labels.forEach(label => {
+    labelsContainer.append(`<span class="label clickable">${label}</span>`);
+  });
+
+  $("#" + id).find(".edit-note").click(function (event) {
+    event.stopPropagation();
+
+    openEditModal(id);
+  });
+}
+
+function updateNotes() {
+  let notes = $(".notes");
+  notes.empty();
+
+  for (let i = 0; i < notesArray.length; i++) {
+    let note = notesArray[i];
+    addNewNote(
+      note.Index,
+      note.Color,
+      note.Title,
+      note.Content,
+      note.Labels
+    );
+  }
+}
+
 $("#save_note").click(function () {
   let title = $("#input-title").val();
   let content = $("#input-feild").val();
@@ -168,64 +251,28 @@ $("#save_note").click(function () {
   }
 });
 
-$(document).ready(function () {
-  
 
-  // Edit
-  $(".notes").on("click", ".edit-note", function (event) {
-    event.stopPropagation();
+// Archive
+$(".notes").on("click", ".archive-note", function () {
+  let note = $(this).closest(".notes-content");
+  let noteIndex = note.attr("id");
 
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
+  let archivedNote = notesArray.find(note => note.Index === noteIndex);
+  archiveArray.push(archivedNote);
 
-    openEditModal(noteIndex);
-  }); 
-
-
-  // Archive
-  $(".notes").on("click", ".archive-note", function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
-
-    let archivedNote = notesArray.find(note => note.Index === noteIndex);
-    archiveArray.push(archivedNote);
-
-    notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    updateNotes();
-    updateArchive(); 
-  });
-
-  $(".archive").on("click", ".restore-archive-note", function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
-
-    let restoredNote = archiveArray.find(note => note.Index === noteIndex);
-
-    notesArray.push(restoredNote);
-    archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
-
-    updateNotes();
-    updateArchive();
-  });
-
-
-  // Delete
-  $(".notes").on("click", ".delete-note", function () {
-    let note = $(this).closest(".notes-content");
-    let noteIndex = note.attr("id");
-
-    notesArray = notesArray.filter(note => note.Index !== noteIndex);
-    updateNotes();
-  });
-
-
-  $("#save_change").click(function () {
-    saveEdit();
-  });
-  
+  notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  updateNotes();
+  updateArchive(); 
 });
 
+// Delete
+$(".notes").on("click", ".delete-note", function () {
+  let note = $(this).closest(".notes-content");
+  let noteIndex = note.attr("id");
 
+  notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  updateNotes();
+});
 
 // Archive
 function updateArchive() {
@@ -266,7 +313,7 @@ function addArchivedNote(id, color, title, content, labels) {
   labels.forEach(label => {
     labelsContainer.append(`<span class="label clickable">${label}</span>`);
   });
-
+  
   $("#" + id).find(".delete-archive-note").click(function () {
     let noteIndex = $(this).closest(".notes-content").attr("id");
     archiveArray = archiveArray.filter(note => note.Index !== noteIndex);
@@ -281,57 +328,10 @@ function addArchivedNote(id, color, title, content, labels) {
     updateNotes();
     updateArchive();
   });
+
 }
 
 
-// Notes
-function updateNotes() {
-  let notes = $(".notes");
-  notes.empty();
-
-  for (let i = 0; i < notesArray.length; i++) {
-    let note = notesArray[i];
-    addNewNote(
-      note.Index,
-      note.Color,
-      note.Title,
-      note.Content,
-      note.Labels
-    );
-  }
-}
-
-function addNewNote(id, color, title, content, labels) {
-  let notes = $(".notes");
-  let noteTemplate = `
-  <div class="notes-content" id="${id}" style="background-color:${color}">
-         <div class="card-container">
-           ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
-           <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
-           <p style="padding-left: 20px;">${content}</p>
-           <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
-         </div>
-         <div class="note-actions">
-           <a href="#" class="delete-note"><i class="material-icons">delete</i></a>
-           <a href="#" class="archive-note"><i class="material-icons">archive</i></a>
-           <a href="#" class="edit-note"><i class="material-icons">edit</i></a>
-         </div>
-       </div>
-  `;
-
-  notes.append(noteTemplate);
-
-  let labelsContainer = $(`#labels-${id}`);
-  labels.forEach(label => {
-    labelsContainer.append(`<span class="label clickable">${label}</span>`);
-  });
-
-  $("#" + id).find(".edit-note").click(function (event) {
-    event.stopPropagation();
-
-    openEditModal(id);
-  });
-}
 
 
 function openEditModal(id) {
