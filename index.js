@@ -134,6 +134,8 @@ document.querySelector('.icons a[href="#"] i.image').addEventListener('click', f
 // Content
 let notesArray = [];
 let archiveArray = [];
+let trashArray = [];
+
 
 $(document).ready(function () {
 
@@ -258,6 +260,88 @@ $("#save_note").click(function () {
   }
 });
 
+// Delete
+$(".notes").on("click", ".delete-note", function () {
+  let note = $(this).closest(".notes-content");
+  let noteIndex = note.attr("id");
+
+  let deletedNote = notesArray.find(note => note.Index === noteIndex);
+  trashArray.push(deletedNote);
+
+  notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  updateNotes();
+  updateTrash();
+});
+
+function updateTrash() {
+  let trash = $("#corbeille-notes");
+  trash.empty();
+
+  for (let i = 0; i < trashArray.length; i++) {
+    let deletedNote = trashArray[i];
+    addDeletedNote(deletedNote.Index, deletedNote.Color, deletedNote.Title, deletedNote.Content, deletedNote.Labels);
+  }
+}
+
+
+function addDeletedNote(id, color, title, content, labels) {
+  let trash = $("#corbeille-notes");
+  let trashTemplate = `
+    <div class="notes-content" id="${id}" style="background-color:${color}">
+      <!-- Structure HTML pour afficher une note dans la corbeille -->
+      <div class="card-container">
+        <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
+        <p style="padding-left: 20px;">${content}</p>
+        <div class="labels-container" id="labels-${id}"></div>
+      </div>
+      <div class="note-actions">
+        <a href="#" class="restore-trash-note"><i class="material-icons">restore</i></a>
+        <a href="#" class="delete-trash-note"><i class="material-icons">delete</i></a>
+      </div>
+    </div>
+  `;
+  trash.append(trashTemplate);
+
+  $("#" + id).find(".restore-trash-note").click(function () {
+    restoreNoteFromTrash(id);
+  });
+
+  $("#" + id).find(".delete-trash-note").click(function () {
+    deleteNoteFromTrash(id);
+  });
+
+  let labelsContainer = $(`#labels-${id}`);
+  labels.forEach(label => {
+    labelsContainer.append(`<span class="label clickable">${label}</span>`);
+  });
+}
+
+$("#" + id).find(".delete-note").click(function () {
+  let noteIndex = $(this).closest(".notes-content").attr("id");
+
+  let deletedNote = notesArray.find(note => note.Index === noteIndex);
+  trashArray.push(deletedNote);
+
+  notesArray = notesArray.filter(note => note.Index !== noteIndex);
+  updateNotes();
+  updateTrash();
+});
+
+
+function restoreNoteFromTrash(id) {
+  let restoredNote = trashArray.find(note => note.Index === id);
+  notesArray.push(restoredNote);
+  trashArray = trashArray.filter(note => note.Index !== id);
+  updateNotes();
+  updateTrash();
+}
+
+function deleteNoteFromTrash(id) {
+  trashArray = trashArray.filter(note => note.Index !== id);
+  updateTrash();
+}
+
+
 
 // Archive
 $(".notes").on("click", ".archive-note", function () {
@@ -272,16 +356,6 @@ $(".notes").on("click", ".archive-note", function () {
   updateArchive();
 });
 
-// Delete
-$(".notes").on("click", ".delete-note", function () {
-  let note = $(this).closest(".notes-content");
-  let noteIndex = note.attr("id");
-
-  notesArray = notesArray.filter(note => note.Index !== noteIndex);
-  updateNotes();
-});
-
-// Archive
 function updateArchive() {
   let archive = $(".archive");
   archive.empty();
