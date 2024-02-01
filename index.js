@@ -170,6 +170,8 @@ $("#save_note").click(function () {
 
 $(document).ready(function () {
   
+
+  // Edit
   $(".notes").on("click", ".edit-note", function (event) {
     event.stopPropagation();
 
@@ -177,10 +179,10 @@ $(document).ready(function () {
     let noteIndex = note.attr("id");
 
     openEditModal(noteIndex);
-  });
+  }); 
 
- 
 
+  // Archive
   $(".notes").on("click", ".archive-note", function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
@@ -206,29 +208,26 @@ $(document).ready(function () {
     updateArchive();
   });
 
+
+  // Delete
   $(".notes").on("click", ".delete-note", function () {
     let note = $(this).closest(".notes-content");
     let noteIndex = note.attr("id");
- 
-    // Déplacer la note vers la corbeille
-    moveNoteToTrash(noteIndex);
- 
-    // Mettre à jour l'interface utilisateur
+
+    notesArray = notesArray.filter(note => note.Index !== noteIndex);
     updateNotes();
-    updateTrash();
- });
- 
+  });
 
 
   $("#save_change").click(function () {
     saveEdit();
   });
-
+  
 });
 
 
 
-
+// Archive
 function updateArchive() {
   let archive = $(".archive");
   archive.empty();
@@ -284,6 +283,8 @@ function addArchivedNote(id, color, title, content, labels) {
   });
 }
 
+
+// Notes
 function updateNotes() {
   let notes = $(".notes");
   notes.empty();
