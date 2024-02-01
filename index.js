@@ -437,7 +437,7 @@ function addNewNote(id, color, title, content, labels) {
   let noteTemplate = `
   <div class="notes-content" id="${id}" style="background-color:${color}">
          <div class="card-container">
-           ${imageURL ? `<img src="${imageURL}" alt="Image preview">` : ''}
+           ${imageURL ? `<img src="${imageURL}" style="width:100%; height:200px">` : ''}
            <h4 class="note-title" style="padding: 20px; padding-bottom: 0">${title}</h4>
            <p style="padding-left: 20px;">${content}</p>
            <div class="labels-container" id="labels-${id}"></div> <!-- Labels container -->
